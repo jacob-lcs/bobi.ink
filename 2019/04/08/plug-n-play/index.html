@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="使用 Yarn(v1.12+)的 Plug’n’Play 机制来取代 node_modules. 目前这还是一个实验性的特性. 背景 node_modules早就成为的全民吐槽的对象, 其他语言的开发者看到 node_modules 对 Node 就望而祛步了,用一个字来形容的话就是’重!’.  如果不了解 Node 模块查找机制, 请点击require() 源码解读  一个简单的前端项目(cre">
+<meta name="keywords" content="Blog,FrontEnd,React,Javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Yarn Plug&#39;n&#39;Play可否助你脱离node_modules苦海?">
+<meta property="og:url" content="https://bobi.ink/2019/04/08/plug-n-play/index.html">
+<meta property="og:site_name" content="Bobi.ink">
+<meta property="og:description" content="使用 Yarn(v1.12+)的 Plug’n’Play 机制来取代 node_modules. 目前这还是一个实验性的特性. 背景 node_modules早就成为的全民吐槽的对象, 其他语言的开发者看到 node_modules 对 Node 就望而祛步了,用一个字来形容的话就是’重!’.  如果不了解 Node 模块查找机制, 请点击require() 源码解读  一个简单的前端项目(cre">
+<meta property="og:locale" content="zh">
+<meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==">
+<meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==">
+<meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==">
+<meta property="og:updated_time" content="2019-04-07T04:18:21.737Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Yarn Plug&#39;n&#39;Play可否助你脱离node_modules苦海?">
+<meta name="twitter:description" content="使用 Yarn(v1.12+)的 Plug’n’Play 机制来取代 node_modules. 目前这还是一个实验性的特性. 背景 node_modules早就成为的全民吐槽的对象, 其他语言的开发者看到 node_modules 对 Node 就望而祛步了,用一个字来形容的话就是’重!’.  如果不了解 Node 模块查找机制, 请点击require() 源码解读  一个简单的前端项目(cre">
+<meta name="twitter:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Yarn Plug&#39;n&#39;Play可否助你脱离node_modules苦海?</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- rss -->
+    
+    
+</head>
+
+<body>
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Blogs</a></li>
+         
+          <li><a href="http://github.com/ivan-94">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2019/04/06/rx-operations/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fa fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bobi.ink/2019/04/08/plug-n-play/"><i class="fa fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bobi.ink/2019/04/08/plug-n-play/&text=Yarn Plug&#39;n&#39;Play可否助你脱离node_modules苦海?"><i class="fa fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bobi.ink/2019/04/08/plug-n-play/&title=Yarn Plug&#39;n&#39;Play可否助你脱离node_modules苦海?"><i class="fa fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bobi.ink/2019/04/08/plug-n-play/&is_video=false&description=Yarn Plug&#39;n&#39;Play可否助你脱离node_modules苦海?"><i class="fa fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Yarn Plug&#39;n&#39;Play可否助你脱离node_modules苦海?&body=Check out this article: https://bobi.ink/2019/04/08/plug-n-play/"><i class="fa fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bobi.ink/2019/04/08/plug-n-play/&title=Yarn Plug&#39;n&#39;Play可否助你脱离node_modules苦海?"><i class="fa fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bobi.ink/2019/04/08/plug-n-play/&title=Yarn Plug&#39;n&#39;Play可否助你脱离node_modules苦海?"><i class="fa fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bobi.ink/2019/04/08/plug-n-play/&title=Yarn Plug&#39;n&#39;Play可否助你脱离node_modules苦海?"><i class="fa fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bobi.ink/2019/04/08/plug-n-play/&title=Yarn Plug&#39;n&#39;Play可否助你脱离node_modules苦海?"><i class="fa fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bobi.ink/2019/04/08/plug-n-play/&name=Yarn Plug&#39;n&#39;Play可否助你脱离node_modules苦海?&description="><i class="fa fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基本原理"><span class="toc-number">2.</span> <span class="toc-text">基本原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开启-pnp"><span class="toc-number">3.</span> <span class="toc-text">开启 pnp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#怎么集成到现有项目"><span class="toc-number">4.</span> <span class="toc-text">怎么集成到现有项目?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Node"><span class="toc-number">4.1.</span> <span class="toc-text">Node</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Webpack"><span class="toc-number">4.2.</span> <span class="toc-text">Webpack</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jest"><span class="toc-number">4.3.</span> <span class="toc-text">jest</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Typescript"><span class="toc-number">4.4.</span> <span class="toc-text">Typescript</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他工具"><span class="toc-number">4.5.</span> <span class="toc-text">其他工具</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-number">6.</span> <span class="toc-text">参考</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index width mx-auto px2 my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Yarn Plug&#39;n&#39;Play可否助你脱离node_modules苦海?
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Bobi.ink</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2019-04-07T16:00:00.000Z" itemprop="datePublished">2019-04-08</time>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>使用 Yarn(v1.12+)的 Plug’n’Play 机制来取代 node_modules. 目前这还是一个实验性的特性.</p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="/images/node_modules-hole.png" alt="node_modules"></p>
+<p><code>node_modules</code>早就成为的全民吐槽的对象, 其他语言的开发者看到 node_modules 对 Node 就望而祛步了,<br>用一个字来形容的话就是’重!’.</p>
+<blockquote>
+<p>如果不了解 Node 模块查找机制, 请点击<a href="http://www.ruanyifeng.com/blog/2015/05/require.html" target="_blank" rel="noopener">require() 源码解读</a></p>
+</blockquote>
+<p>一个简单的前端项目(<em>create-react-app</em>)的大小和文件数:</p>
+<center><br>  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="/images/front-end-project.png" alt="frontend-project" width="400"><br></center>
+
+<p>而 macOS 的<code>/Library</code>目录的大小的文件数:</p>
+<center><br>  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="/images/mac-library.png" alt="macos library" width="400"><br></center>
+
+<p>一行<code>hello world</code>就需要安装 130MB 以上的依赖模块, 而且文件数是<strong>32,313</strong>. 相比之下 macOS 的<code>/Library</code><br>的空间占用 9.02GB, 文件数只是前者的两倍(<strong>67,890</strong>). 综上可以看出 node_modules 的特点是:</p>
+<ul>
+<li>目录树结构复杂</li>
+<li>文件数较多且都比较小</li>
+<li>依赖多, 一个简单的项目就要安装好几吨依赖</li>
+</ul>
+<p>所以说 node_modules 对于机械硬盘来说是个噩梦, 记得有一次一个同事删除 node_modules 一个下午都没搞定.<br>对于前端开发者来说, 我们有 N 个需要<code>npm install</code>的项目 😹.</p>
+<p>除此之外, Node 的模块机制还有以下<strong>缺点</strong>:</p>
+<ul>
+<li><p>Node 本身并没有模块的概念, 它在运行时进行查找和加载. 这个缺点和<em>‘动态语言与静态语言的优劣对比’</em>相似,<br>你可能在开发环境运行得好好的, 可能到了线上就运行不了了, 原因是一个模块没有添加到 package.json</p>
+</li>
+<li><p>Node 模块的查找策略非常浪费. 这个缺点在大部分前端项目中可以进行优化,<br>比如 webpack 就可以限定只在项目根目录下的 node_modules 中查找, 但是对于嵌套的依赖, 依然需要 2 次以上的查找</p>
+</li>
+<li><p>node_modules 不能有效地处理重复的包. 两个名称相同但是不同版本的包是不能在一个目录下共存的.<br>所以会导致嵌套的 node_modules, 而且这些项目’依赖的依赖’是无法和项目或其他依赖共享的:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> ① 假设项目依赖a,b,c三个模块, 依赖树为:</span><br><span class="line"><span class="meta">#</span>  +- a</span><br><span class="line"><span class="meta">#</span>    +- react@15</span><br><span class="line"><span class="meta">#</span>  +- b</span><br><span class="line"><span class="meta">#</span>    +- react@16</span><br><span class="line"><span class="meta">#</span>  +- c</span><br><span class="line"><span class="meta">#</span>    +- react@16</span><br><span class="line"><span class="meta">#</span> yarn安装时会按照项目被依赖的次数作为权重, 将依赖提升(hoisting),</span><br><span class="line"><span class="meta">#</span> 安装后的node_modules结构为:</span><br><span class="line">  .</span><br><span class="line">  └── node_modules</span><br><span class="line">      ├── a</span><br><span class="line">      │   ├── index.js</span><br><span class="line">      │   ├── node_modules</span><br><span class="line">      │   │   └── react  # @15</span><br><span class="line">      │   └── package.json</span><br><span class="line">      ├── b</span><br><span class="line">      │   ├── index.js</span><br><span class="line">      │   └── package.json</span><br><span class="line">      ├── c</span><br><span class="line">      │   ├── index.js</span><br><span class="line">      │   └── package.json</span><br><span class="line">      └── react  # @16 被依赖了两次, 所以进行提升</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> ② 现在假设在①的基础上, 根项目依赖了react@15, 对于项目自己的依赖肯定是要放在node_modules根目录的,</span><br><span class="line"><span class="meta">#</span> 由于一个目录下不能存在同名目录, 所以react@16没有的提升机会. </span><br><span class="line"><span class="meta">#</span> 安装后node_moduels结构为</span><br><span class="line">  .</span><br><span class="line">  └── node_modules</span><br><span class="line">      ├── a</span><br><span class="line">      │   ├── index.js</span><br><span class="line">      │   └── package.json # react@15 提升</span><br><span class="line">      ├── b</span><br><span class="line">      │   ├── index.js</span><br><span class="line">      │   ├── node_modules</span><br><span class="line">      │   │   └── react  # @16</span><br><span class="line">      │   └── package.json</span><br><span class="line">      ├── c</span><br><span class="line">      │   ├── index.js</span><br><span class="line">      │   ├── node_modules</span><br><span class="line">      │   │   └── react  # @16</span><br><span class="line">      │   └── package.json</span><br><span class="line">      └── react  # @15</span><br><span class="line"><span class="meta">#</span> 上面的结果可以看出, react@16出现了重复</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>为此 Yarn 集成了<code>Plug&#39;n&#39;Play</code>(简称 pnp), 中文名称可以称为’即插即用’, 来解决 node_modules’地狱’.</p>
+<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><p>按照普通的按照流程, Yarn 会生成一个 node_modules 目录, 然后 Node 按照它的模块查找规则在 node_modules 目录中查找.<br>但实际上 Node 并不知道这个模块是什么, 它在 node_modules 查找, 没找到就在父目录的 node_modules 查找, 以此类推.<br>这个效率是非常低下的.</p>
+<p><strong>但是 Yarn 作为一个包管理器, 它知道你的项目的依赖树. 那能不能让 Yarn 告诉 Node? 让它直接到某个目录去加载模块.<br>这样即可以提高 Node 模块的查找效率, 也可以减少 node_modules 文件的拷贝. 这就是<code>Plug&#39;n&#39;Play</code>的基本原理.</strong></p>
+<p>在 pnp 模式下, Yarn 不会创建 node_modules 目录, 取而代之的是一个<code>.png.js</code>文件, 这是一个 node 程序,<br>这个文件包含了项目的依赖树信息, 模块查找算法, 也包含了模块查找器的 patch 代码(在 Node 环境, 覆盖 Module._load 方法).</p>
+<p><br></p>
+<p>使用 pnp 机制的以下<strong>优点</strong>:</p>
+<ul>
+<li>摆脱 node_modules.<ul>
+<li>时间上: 相比较在热缓存(hot cache)环境下运行<code>yarn install</code>节省 70%的时间</li>
+<li>空间上: pnp 模式下, 所有 npm 模块都会存放在全局的缓存目录下, 依赖树扁平化, 避免拷贝和重复</li>
+</ul>
+</li>
+<li>提高模块加载效率. Node 为了查找模块, 需要调用大量的 stat 和 readdir 系统调用.<br>pnp 通过 Yarn 获取或者模块信息, 直接定位模块</li>
+<li>不再受限于 node_modules 同名模块不同版本不能在同一目录</li>
+</ul>
+<blockquote>
+<p>在 Mac 下 Yarn 的安装速度非常快, 热缓存下仅需几秒. 原因是 SSD + APFS 的 Copy-on-write 机制.<br>这使得文件的拷贝不用占用空间, 相当于创建一个链接. 所以拷贝和删除的速度非常快.<br>但是 node_modules 复杂的目录结构和超多的文件, 仍然需要调用大量的系统调用, 这也会拖慢安装过程.<br><br><br>💡 如果觉得 pnp 繁琐或不可靠, 那就赶紧用上 SSD 配合支持 Copy-on-write 的文件系统.</p>
+</blockquote>
+<p><br></p>
+<p>使用 pnp 的<strong>风险</strong>:</p>
+<p>目前前端社区的各种工具都依赖于 node_modules 模块查找机制. 例如</p>
+<ul>
+<li>Node</li>
+<li>Electron, electron-builder 等等</li>
+<li>Webpack</li>
+<li>Typescript: 定位类型声明文件</li>
+<li>Babel: 定位插件和 preset</li>
+<li>Eslint: 定位插件和 preset, rules</li>
+<li>Jest</li>
+<li>编辑器, 如 VsCode</li>
+<li>…😿</li>
+</ul>
+<p>pnp 一个非常新的东西, 在去年 9 月份(2018)面世. 要让这些工具和 pnp 集成是个不小的挑战, 而且这些这些工具<br>和 pnp 都是在不断迭代的, pnp 还不稳定, 未来可能变化, 这也会带来某些维护方面的负担.</p>
+<p>除了模块查找机制, 有一些工具是直接在 node_modules 中做其他事情的, 比如缓存, 存放临时证书. 例如<code>cache-loader</code>, <code>webpack-dev-server</code></p>
+<h2 id="开启-pnp"><a href="#开启-pnp" class="headerlink" title="开启 pnp"></a>开启 pnp</h2><p>如果只是单纯的 Node 项目, 迁入过程还算比较简单. 首先在<code>package.json</code>开启 pnp 安装模式:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"installConfig"</span>: &#123;</span><br><span class="line">    <span class="attr">"pnp"</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接着安装依赖:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn add express</span><br></pre></td></tr></table></figure>
+<p>安装后项目根目录就会出现一个<code>.pnp.js</code>文件. 下一步编写代码:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="keyword">const</span> app = express();</span><br><span class="line"><span class="keyword">const</span> port = <span class="number">3000</span>;</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">'/'</span>, (req, res) =&gt; res.send(<span class="string">'Hello World!'</span>));</span><br><span class="line"></span><br><span class="line">app.listen(port, () =&gt; <span class="built_in">console</span>.log(<span class="string">`Example app listening on port <span class="subst">$&#123;port&#125;</span>!`</span>));</span><br></pre></td></tr></table></figure>
+<p>接下来就是运行 Node 代码了, 如果直接<code>node index.js</code>会报<code>Error: Cannot find module &#39;express&#39;</code>异常.<br>这是因为还没有 patch Node 的模块查找器. 可以通过以下命令运行:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">yarn node</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 或者</span><br><span class="line"></span><br><span class="line">node --require="./.pnp.js" index.js</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>.pnp.js</code>文件不应该提交到版本库, 这个文件里面包含了硬编码的缓存目录. 在 Yarn v2 中会进行重构</p>
+</blockquote>
+<h2 id="怎么集成到现有项目"><a href="#怎么集成到现有项目" class="headerlink" title="怎么集成到现有项目?"></a>怎么集成到现有项目?</h2><p>pnp 集成无非就是重新实现现有工具的模块查找机制. 随着前端工程化的发展, 一个前端项目会集成非常多的工具,<br>如果这些工具没法适配, 可以说 pnp 很难往前走. 然而这并不是 pnp 能够控制的, 需要这些工具开发者的配合.</p>
+<p>社区上不少项目已经集成了 pnp:</p>
+<ul>
+<li><a href="https://github.com/facebook/create-react-app" target="_blank" rel="noopener">create-react-app</a></li>
+<li><a href="https://github.com/gatsbyjs/gatsby" target="_blank" rel="noopener">gastby</a></li>
+</ul>
+<p><br></p>
+<h3 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h3><p>对于 Node, pnp 是开箱即用的, 直接使用<code>--require=&quot;./.pnp.js&quot;</code>导入<code>.pnp.js</code>文件即可,<br><code>.pnp.js</code>会对 Node 的 Module 对象进行 patch, 重新实现模块查找机制</p>
+<h3 id="Webpack"><a href="#Webpack" class="headerlink" title="Webpack"></a>Webpack</h3><p>Webpack 使用的模块查找器是<a href="https://github.com/webpack/enhanced-resolve" target="_blank" rel="noopener"><code>enhanced-resolve</code></a>, 可以通过<a href="https://github.com/arcanis/pnp-webpack-plugin" target="_blank" rel="noopener"><code>pnp-webpack-plugin</code></a>插件来扩展<code>enhanced-resolve</code><br>来支持 pnp.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> PnpWebpackPlugin = <span class="built_in">require</span>(<span class="string">`pnp-webpack-plugin`</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  resolve: &#123;</span><br><span class="line">    <span class="comment">// 扩展模块查找器</span></span><br><span class="line">    plugins: [PnpWebpackPlugin],</span><br><span class="line">  &#125;,</span><br><span class="line">  resolveLoader: &#123;</span><br><span class="line">    <span class="comment">// 扩展loader模块查找器.</span></span><br><span class="line">    plugins: [PnpWebpackPlugin.moduleLoader(<span class="built_in">module</span>)],</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="jest"><a href="#jest" class="headerlink" title="jest"></a>jest</h3><p><a href="http://jestjs.io" target="_blank" rel="noopener">jest</a>支持通过<code>resolver</code>来配置查找器:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  resolver: <span class="built_in">require</span>.resolve(<span class="string">`jest-pnp-resolver`</span>),</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="Typescript"><a href="#Typescript" class="headerlink" title="Typescript"></a>Typescript</h3><p>Typescript 也使用自己的模块查找器, TS团队为了性能方面的考虑, 暂时不允许第三方工具来扩展查找器. 也就是说<strong>暂时不能用</strong>.</p>
+<p>在这个<a href="https://github.com/Microsoft/TypeScript/issues/28289" target="_blank" rel="noopener">issue</a>中, 有人提出使用<code>&quot;moduleResolution&quot;: &quot;yarnpnp&quot;</code>或者使用类似<a href="https://github.com/TypeStrong/ts-loader" target="_blank" rel="noopener"><code>ts-loader</code></a>的<a href="https://github.com/arcanis/pnp-webpack-plugin/blob/b09fbdc2a9f16dc3837454b8d367963b1a30655f/index.js#L141" target="_blank" rel="noopener"><code>resolveModuleName</code></a>的方式支持 pnp 模块查找.</p>
+<p>TS 团队的回应是: pnp(或者 npm 的 tink)还是早期阶段, 未来可能会有变化, 例如<code>.pnp.js</code>文件, 显然不合适那么早入坑.<br>另外为了优化和控制编译器性能, TS 也没有计划在编译期间暴露接口给第三方执行代码.</p>
+<p>所以现在 Typescript 至今也没有类似 babel 的插件机制. 除非自己实现一个’TS compiler host’, 例如<code>ts-loader</code>就自己扩展了插件机制和模块查找机制, 来支持类似<a href="https://github.com/Brooooooklyn/ts-import-plugin" target="_blank" rel="noopener">ts-import-plugin</a>等插件, 因此<code>ts-loader</code>现在是支持 pnp 的:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> PnpWebpackPlugin = <span class="built_in">require</span>(<span class="string">`pnp-webpack-plugin`</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.ts$/</span>,</span><br><span class="line">        loader: <span class="built_in">require</span>.resolve(<span class="string">'ts-loader'</span>),</span><br><span class="line">        options: PnpWebpackPlugin.tsLoaderOptions(),</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><br></p>
+<p>总结, <strong><code>Typescript</code>暂时不支持</strong>, 且近期也没有开发计划, 所以<code>VsCode</code>也别指望了. <a href="https://github.com/Realytics/fork-ts-checker-webpack-plugin/issues/181" target="_blank" rel="noopener"><code>fork-ts-checker-webpack-plugin</code></a>也还没跟上. 显然 Typescript 是 pnp 的第一拦路虎</p>
+<p><br></p>
+<h3 id="其他工具"><a href="#其他工具" class="headerlink" title="其他工具"></a>其他工具</h3><ul>
+<li><a href="https://github.com/arcanis/rollup-plugin-pnp-resolve" target="_blank" rel="noopener">rollup-plugin-pnp-resolve</a></li>
+<li><a href="https://yarnpkg.com/en/package/resolve" target="_blank" rel="noopener">resolve</a>: babel, gulp</li>
+<li><a href="https://github.com/yarnpkg/yarn/pull/6449" target="_blank" rel="noopener">eslint</a>: 到 v6 才能<a href="https://github.com/yarnpkg/berry/issues/8" target="_blank" rel="noopener">完美支持</a>.</li>
+<li><a href="https://github.com/facebook/flow/issues/7014" target="_blank" rel="noopener">flow</a></li>
+<li><a href="https://github.com/facebook/create-react-app/pull/5136" target="_blank" rel="noopener">create-react-app</a> 支持 pnp, 但是 Typescript 模式下不支持</li>
+<li>electron: 暂时没有相关的消息. 对于一个electron应用来说, 依赖是自包含的, 所以pnp可能不适合该场景</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>综上, pnp 是一个不错的解决方案, 可以解决 Node 模块机制的空间和时间的效率问题. 但是在现阶段, 它还不是成熟, 有<br>很多坑要踩, 且和社区各种工具集成存在不少问题. 所以还不建议在生产环境中使用.</p>
+<p>所以目前阶段对于普通开发者来说, 如果要提升npm安装速度, 还是得上SSD+Copy-On-Write!😂</p>
+<p>下面是各种项目的集成情况(✅(支持)|🚧(计划中或不完美)|❌(不支持)):</p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Webpack</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>rollup</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>browserify</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>gulp</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>jest</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Node</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Typescript/VScode IntelliSense</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>eslint</td>
+<td>🚧</td>
+</tr>
+<tr>
+<td>flow</td>
+<td>🚧</td>
+</tr>
+<tr>
+<td>create-react-app</td>
+<td>🚧</td>
+</tr>
+<tr>
+<td>ts-loader</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>fork-ts-checker-webpack-plugin</td>
+<td>🚧</td>
+</tr>
+</tbody>
+</table>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://github.com/yarnpkg/rfcs/blob/master/accepted/0000-plug-an-play.md" target="_blank" rel="noopener">Plug’n’Play Whitepaper</a> pnp的论文</li>
+<li><a href="https://medium.freecodecamp.org/getting-rid-of-node-modules-with-yarn-plugn-play-a490e5e747d7" target="_blank" rel="noopener">How to get rid of node_modules with Yarn Plug’n’Play</a></li>
+<li><a href="https://yarnpkg.com/en/docs/pnp" target="_blank" rel="noopener">Yarn 官方文档</a></li>
+<li><a href="https://github.com/yarnpkg/pnp-sample-app" target="_blank" rel="noopener">pnp-sample-app</a> pnp 官方示例</li>
+<li><a href="https://github.com/yarnpkg/yarn/issues/6953" target="_blank" rel="noopener">Yarn’s Future - v2 and beyond</a></li>
+<li><a href="https://medium.com/@thomasreggi/yarn-plugn-play-1c398bf3e417" target="_blank" rel="noopener">Hacker News Discussion</a></li>
+</ul>
+<p>相关 issues:</p>
+<ul>
+<li><a href="https://github.com/yarnpkg/yarn/issues/6388" target="_blank" rel="noopener">Yarn Plug ‘N Play should generate a static manifest file, not <code>.pnp.js</code></a></li>
+<li><a href="https://github.com/Microsoft/TypeScript/issues/28289" target="_blank" rel="noopener">Typescript: Add new moduleResolution option: <code>yarn-pnp</code></a></li>
+<li><a href="https://github.com/Realytics/fork-ts-checker-webpack-plugin/issues/181" target="_blank" rel="noopener">fork-ts-checker-webpack-plugin: Custom resolveModuleName</a></li>
+</ul>
+<p>其他方案</p>
+<ul>
+<li><a href="https://github.com/npm/tink" target="_blank" rel="noopener">npm tink</a>: a dependency unwinder for javascript</li>
+<li><a href="https://github.com/pnpm/pnpm" target="_blank" rel="noopener">pnpm</a> Fast, disk space efficient package manager</li>
+<li><a href="https://yarnpkg.com/en/docs/workspaces" target="_blank" rel="noopener">Yarn Workspaces</a> 多个项目共有依赖</li>
+</ul>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        </div>
+    </div>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Blogs</a></li>
+         
+          <li><a href="http://github.com/ivan-94">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基本原理"><span class="toc-number">2.</span> <span class="toc-text">基本原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开启-pnp"><span class="toc-number">3.</span> <span class="toc-text">开启 pnp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#怎么集成到现有项目"><span class="toc-number">4.</span> <span class="toc-text">怎么集成到现有项目?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Node"><span class="toc-number">4.1.</span> <span class="toc-text">Node</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Webpack"><span class="toc-number">4.2.</span> <span class="toc-text">Webpack</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jest"><span class="toc-number">4.3.</span> <span class="toc-text">jest</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Typescript"><span class="toc-number">4.4.</span> <span class="toc-text">Typescript</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他工具"><span class="toc-number">4.5.</span> <span class="toc-text">其他工具</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-number">6.</span> <span class="toc-text">参考</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bobi.ink/2019/04/08/plug-n-play/"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bobi.ink/2019/04/08/plug-n-play/&text=Yarn Plug&#39;n&#39;Play可否助你脱离node_modules苦海?"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bobi.ink/2019/04/08/plug-n-play/&title=Yarn Plug&#39;n&#39;Play可否助你脱离node_modules苦海?"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bobi.ink/2019/04/08/plug-n-play/&is_video=false&description=Yarn Plug&#39;n&#39;Play可否助你脱离node_modules苦海?"><i class="fa fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Yarn Plug&#39;n&#39;Play可否助你脱离node_modules苦海?&body=Check out this article: https://bobi.ink/2019/04/08/plug-n-play/"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bobi.ink/2019/04/08/plug-n-play/&title=Yarn Plug&#39;n&#39;Play可否助你脱离node_modules苦海?"><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bobi.ink/2019/04/08/plug-n-play/&title=Yarn Plug&#39;n&#39;Play可否助你脱离node_modules苦海?"><i class="fa fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bobi.ink/2019/04/08/plug-n-play/&title=Yarn Plug&#39;n&#39;Play可否助你脱离node_modules苦海?"><i class="fa fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bobi.ink/2019/04/08/plug-n-play/&title=Yarn Plug&#39;n&#39;Play可否助你脱离node_modules苦海?"><i class="fa fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bobi.ink/2019/04/08/plug-n-play/&name=Yarn Plug&#39;n&#39;Play可否助你脱离node_modules苦海?&description="><i class="fa fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      <ul>
+        <li id="toc"><a class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa fa-list fa-lg" aria-hidden="true"></i> TOC</a></li>
+        <li id="share"><a class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa fa-share-alt fa-lg" aria-hidden="true"></i> Share</a></li>
+        <li id="top" style="display:none"><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a></li>
+        <li id="menu"><a class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa fa-bars fa-lg" aria-hidden="true"></i> Menu</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 Ivan
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Blogs</a></li>
+         
+          <li><a href="http://github.com/ivan-94">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+<script>!function(o){var i=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function c(t,n){var e=new Image,o=t.getAttribute("data-original");e.onload=function(){t.src=o,n&&n()},e.src=o}function t(){for(var t=0;t<i.length;t++)n=i[t],void 0,0<=(e=n.getBoundingClientRect()).top&&0<=e.left&&e.top<=(o.innerHeight||document.documentElement.clientHeight)&&c(i[t],function(){i.splice(t,t)});var n,e;console.log("trigger")}t(),o.addEventListener("scroll",function(){!function(t,n){clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(n)},500)}(t,o)})}(this);</script></body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="/lib/meslo-LG/styles.css">
+<link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-44571525-2', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+    <!-- Disqus Comments -->
+    <script type="text/javascript">
+        var disqus_shortname = 'bobi-ink';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
