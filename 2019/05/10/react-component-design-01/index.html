@@ -6,19 +6,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="description" content="系列引言最近准备培训新人, 为了方便新人较快入手 React 开发并编写高质量的组件代码, 我根据自己的实践经验对React 组件设计的相关实践和规范整理了一些文档, 将部分章节分享了出来. 由于经验有限, 文章可能会有某些错误, 希望大家指出, 互相交流. 由于篇幅太长, 所以拆分为几篇文章. 主要有以下几个主题:  01 类型检查 02 组件的组织 待更新 03 样式的管理 待更新 04 组件">
+    <meta name="description" content="系列引言最近准备培训新人, 为了方便新人较快入手 React 开发并编写高质量的组件代码, 我根据自己的实践经验对React 组件设计的相关实践和规范整理了一些文档, 将部分章节分享了出来. 由于经验有限, 文章可能会有某些错误, 希望大家指出, 互相交流. 由于篇幅太长, 所以拆分为几篇文章. 主要有以下几个主题:  01 类型检查 02 组件的组织 03 样式的管理 04 组件的思维 待更新">
 <meta name="keywords" content="Blog,FrontEnd,React,Javascript">
 <meta property="og:type" content="article">
 <meta property="og:title" content="React组件设计实践总结01 - 类型检查">
 <meta property="og:url" content="https://bobi.ink/2019/05/10/react-component-design-01/index.html">
 <meta property="og:site_name" content="Bobi.ink">
-<meta property="og:description" content="系列引言最近准备培训新人, 为了方便新人较快入手 React 开发并编写高质量的组件代码, 我根据自己的实践经验对React 组件设计的相关实践和规范整理了一些文档, 将部分章节分享了出来. 由于经验有限, 文章可能会有某些错误, 希望大家指出, 互相交流. 由于篇幅太长, 所以拆分为几篇文章. 主要有以下几个主题:  01 类型检查 02 组件的组织 待更新 03 样式的管理 待更新 04 组件">
+<meta property="og:description" content="系列引言最近准备培训新人, 为了方便新人较快入手 React 开发并编写高质量的组件代码, 我根据自己的实践经验对React 组件设计的相关实践和规范整理了一些文档, 将部分章节分享了出来. 由于经验有限, 文章可能会有某些错误, 希望大家指出, 互相交流. 由于篇幅太长, 所以拆分为几篇文章. 主要有以下几个主题:  01 类型检查 02 组件的组织 03 样式的管理 04 组件的思维 待更新">
 <meta property="og:locale" content="zh">
 <meta property="og:image" content="https://codesandbox.io/static/img/play-codesandbox.svg">
-<meta property="og:updated_time" content="2019-05-12T11:42:24.310Z">
+<meta property="og:updated_time" content="2019-05-14T03:49:08.977Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="React组件设计实践总结01 - 类型检查">
-<meta name="twitter:description" content="系列引言最近准备培训新人, 为了方便新人较快入手 React 开发并编写高质量的组件代码, 我根据自己的实践经验对React 组件设计的相关实践和规范整理了一些文档, 将部分章节分享了出来. 由于经验有限, 文章可能会有某些错误, 希望大家指出, 互相交流. 由于篇幅太长, 所以拆分为几篇文章. 主要有以下几个主题:  01 类型检查 02 组件的组织 待更新 03 样式的管理 待更新 04 组件">
+<meta name="twitter:description" content="系列引言最近准备培训新人, 为了方便新人较快入手 React 开发并编写高质量的组件代码, 我根据自己的实践经验对React 组件设计的相关实践和规范整理了一些文档, 将部分章节分享了出来. 由于经验有限, 文章可能会有某些错误, 希望大家指出, 互相交流. 由于篇幅太长, 所以拆分为几篇文章. 主要有以下几个主题:  01 类型检查 02 组件的组织 03 样式的管理 04 组件的思维 待更新">
 <meta name="twitter:image" content="https://codesandbox.io/static/img/play-codesandbox.svg">
     
     
@@ -134,9 +134,9 @@
     <h2 id="系列引言"><a href="#系列引言" class="headerlink" title="系列引言"></a>系列引言</h2><p>最近准备培训新人, 为了方便新人较快入手 React 开发并编写高质量的组件代码, 我根据自己的实践经验对<strong>React 组件设计的相关实践和规范</strong>整理了一些文档, 将部分章节分享了出来. 由于经验有限, 文章可能会有某些错误, 希望大家指出, 互相交流.</p>
 <p>由于篇幅太长, 所以拆分为几篇文章. 主要有以下几个主题:</p>
 <ul>
-<li><a href="./">01 类型检查</a></li>
-<li>02 组件的组织 待更新</li>
-<li>03 样式的管理 待更新</li>
+<li><a href="/2019/05/10/react-component-design-01/">01 类型检查</a></li>
+<li><a href="/2019/05/11/react-component-design-02/">02 组件的组织</a></li>
+<li><a href="/2019/05/14/react-component-design-03/">03 样式的管理</a></li>
 <li>04 组件的思维 待更新</li>
 <li>05 状态管理 待更新</li>
 </ul>
