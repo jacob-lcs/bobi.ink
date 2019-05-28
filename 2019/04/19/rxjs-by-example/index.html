@@ -19,7 +19,7 @@
 <meta property="og:image" content="https://bobi.ink/images/03/process-01.png">
 <meta property="og:image" content="https://bobi.ink/images/03/process-03.png">
 <meta property="og:image" content="https://bobi.ink/images/03/redux.png">
-<meta property="og:updated_time" content="2019-04-21T12:08:02.515Z">
+<meta property="og:updated_time" content="2019-05-21T23:07:52.763Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Rx建模入门">
 <meta name="twitter:description" content="本文介绍如何使用 Rx 的响应式编程思维来对业务逻辑进行建模, 你会了解到响应式编程的优势和业务抽象能力, 学会将现有的业务流程以数据流的方式表达出来. 你的工具库中不能少了 Rx 这件利器. Rx 学习曲线陡峭是总所周知的, 我们接触的大部分编程语言或框架都是面向对象的. 在面对 Rx 这响应式编程的方式, 会觉得无从入手,笔者也是 Rx 的初学者, 拜读过多次徐飞Rx 的相关文章, 基本上都是">
@@ -243,7 +243,7 @@
 <p>todos$流会响应到 view 上, 另一方面需要持久化到本地存储. 也就是说这是一个多播流.</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">todos$</span>: i-u-u-uuu--u---- #</span><br><span class="line">          \(debounce)/</span><br><span class="line"><span class="meta">save$</span>   i--u--u---u----- # 存储流, 使用debounce来避免频繁存储</span><br></pre></td></tr></table></figure>
 <p>并行渲染到页面:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">todos$</span>: i-u-u-uuu--u---- #</span><br><span class="line">       \(render)/</span><br><span class="line"><span class="meta">dom$</span>:   i--u--u---u----- # dom渲染, 假设也是流(cycle.js就是如此)</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">todos$</span>: i-u-u-uuu--u---- #</span><br><span class="line">       \(render)/</span><br><span class="line"><span class="meta">dom$</span>:   i-u-u-uuu--u---- # dom渲染, 假设也是流(cycle.js就是如此)</span><br></pre></td></tr></table></figure>
 <p>这个实例的数据流和 Redux 的模型非常像, add$, modify$, remove$和complete$就是 Action, todos 流会使用<br>类似 Reducer 的机制来处理这些 Action 生成新的 State</p>
 <p><img src="/images/03/redux.png" alt="redux"></p>
 <p><code>代码实现</code>:</p>
