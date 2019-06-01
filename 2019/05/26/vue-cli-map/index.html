@@ -21,7 +21,7 @@
 <meta property="og:image" content="https://bobi.ink/codes/vue-plugin.png">
 <meta property="og:image" content="https://bobi.ink/images/05/vue-cli.png">
 <meta property="og:image" content="https://bobi.ink/images/05/vue-service-struct.png">
-<meta property="og:updated_time" content="2019-05-28T02:40:38.318Z">
+<meta property="og:updated_time" content="2019-06-01T08:15:46.354Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="[技术地图] vue-cli">
 <meta name="twitter:description" content="这是一个新开的’实验性’文章系列，如其名‘技术地图’，这个系列计划剖析一些前端开源项目，可能会探讨这些项目的设计和组织、整理他们使用到技术栈。 首先拿vue-cli小试牛刀，再决定后续要不要继续这个系列.  我一直在思考我们编程主要在做什么？我们有一大部分工作就是选择各种工具/库/框架，来黏合业务. 工具和场景越匹配、原理了解越多，运用越娴熟，我们效率可能就越高. 这种说法很有争议，就像程序=算法">
@@ -72,6 +72,8 @@
     <br>
     <span id="actions">
       <ul>
+        
+        <li><a class="icon" href="/2019/05/29/styled-components-map/"><i class="fa fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
         
         
         <li><a class="icon" href="/2019/05/20/react-component-design-05/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
@@ -199,7 +201,7 @@
 <tr>
 <td>扩展性</td>
 <td>强，通过插件扩展 wepack 配置</td>
-<td>弱, 强约定, 无法配置 webpack，可以 eject, 然后手工配置；支持 babel-macro</td>
+<td>弱, 强约定, 无法配置 webpack，可以 eject, 然后手工配置；支持 babel-macro;(严格说可以通过<a href="https://github.com/timarney/react-app-rewired" target="_blank" rel="noopener">react-app-rewired</a>进行扩展)</td>
 <td>中(可以配置 babel，postcss，Typescript); 提供了 Node API; 支持插件扩展文件类型</td>
 </tr>
 <tr>
