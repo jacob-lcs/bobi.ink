@@ -6,13 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="description" content="CSS 是前端开发的重要组成部分，但是它并不完美，本文主要探讨 React 样式管理方面的一些解决方案，目的是实现样式的高度可定制化, 让大型项目的样式代码更容易维护. 系列目录  01 类型检查 02 组件的组织 03 样式的管理 04 组件的思维 05 状态管理 待更新   目录   1. 认识 CSS 的局限性 1️⃣ 全局性 2️⃣ 依赖 3️⃣ 无用代码的移除 4️⃣ 压缩 5️⃣ 常量">
-<meta name="keywords" content="Blog,FrontEnd,React,Javascript">
+    <meta name="description" content="CSS 是前端开发的重要组成部分，但是它并不完美，本文主要探讨 React 样式管理方面的一些解决方案，目的是实现样式的高度可定制化, 让大型项目的样式代码更容易维护. 系列目录  01 类型检查 02 组件的组织 03 样式的管理 04 组件的思维 05 状态管理   目录   1. 认识 CSS 的局限性 1️⃣ 全局性 2️⃣ 依赖 3️⃣ 无用代码的移除 4️⃣ 压缩 5️⃣ 常量共享 6">
+<meta name="keywords" content="Blog,FrontEnd,React,Javascript,Typescript">
 <meta property="og:type" content="article">
 <meta property="og:title" content="React组件设计实践总结03 - 样式的管理">
 <meta property="og:url" content="https://bobi.ink/2019/05/14/react-component-design-03/index.html">
 <meta property="og:site_name" content="Bobi.ink">
-<meta property="og:description" content="CSS 是前端开发的重要组成部分，但是它并不完美，本文主要探讨 React 样式管理方面的一些解决方案，目的是实现样式的高度可定制化, 让大型项目的样式代码更容易维护. 系列目录  01 类型检查 02 组件的组织 03 样式的管理 04 组件的思维 05 状态管理 待更新   目录   1. 认识 CSS 的局限性 1️⃣ 全局性 2️⃣ 依赖 3️⃣ 无用代码的移除 4️⃣ 压缩 5️⃣ 常量">
+<meta property="og:description" content="CSS 是前端开发的重要组成部分，但是它并不完美，本文主要探讨 React 样式管理方面的一些解决方案，目的是实现样式的高度可定制化, 让大型项目的样式代码更容易维护. 系列目录  01 类型检查 02 组件的组织 03 样式的管理 04 组件的思维 05 状态管理   目录   1. 认识 CSS 的局限性 1️⃣ 全局性 2️⃣ 依赖 3️⃣ 无用代码的移除 4️⃣ 压缩 5️⃣ 常量共享 6">
 <meta property="og:locale" content="zh">
 <meta property="og:image" content="https://bobi.ink/images/04/vjeux-speak.png">
 <meta property="og:image" content="https://bobi.ink/images/04/gray-scale.png">
@@ -20,10 +20,10 @@
 <meta property="og:image" content="https://bobi.ink/images/04/styled-benchmark.png">
 <meta property="og:image" content="https://bobi.ink/images/04/css-determination.png">
 <meta property="og:image" content="https://bobi.ink/images/04/bootstrap-rem.gif">
-<meta property="og:updated_time" content="2019-06-15T01:01:44.192Z">
+<meta property="og:updated_time" content="2019-07-11T14:34:55.041Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="React组件设计实践总结03 - 样式的管理">
-<meta name="twitter:description" content="CSS 是前端开发的重要组成部分，但是它并不完美，本文主要探讨 React 样式管理方面的一些解决方案，目的是实现样式的高度可定制化, 让大型项目的样式代码更容易维护. 系列目录  01 类型检查 02 组件的组织 03 样式的管理 04 组件的思维 05 状态管理 待更新   目录   1. 认识 CSS 的局限性 1️⃣ 全局性 2️⃣ 依赖 3️⃣ 无用代码的移除 4️⃣ 压缩 5️⃣ 常量">
+<meta name="twitter:description" content="CSS 是前端开发的重要组成部分，但是它并不完美，本文主要探讨 React 样式管理方面的一些解决方案，目的是实现样式的高度可定制化, 让大型项目的样式代码更容易维护. 系列目录  01 类型检查 02 组件的组织 03 样式的管理 04 组件的思维 05 状态管理   目录   1. 认识 CSS 的局限性 1️⃣ 全局性 2️⃣ 依赖 3️⃣ 无用代码的移除 4️⃣ 压缩 5️⃣ 常量共享 6">
 <meta name="twitter:image" content="https://bobi.ink/images/04/vjeux-speak.png">
     
     
@@ -143,7 +143,7 @@
 <li><a href="/2019/05/11/react-component-design-02/">02 组件的组织</a></li>
 <li><a href="/2019/05/14/react-component-design-03/">03 样式的管理</a></li>
 <li><a href="/2019/05/15/react-component-design-04/">04 组件的思维</a></li>
-<li>05 状态管理 待更新</li>
+<li><a href="/2019/05/20/react-component-design-05/">05 状态管理</a></li>
 </ul>
 <p><br></p>
 <p><strong>目录</strong></p>

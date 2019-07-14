@@ -7,7 +7,7 @@
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="description" content="本文主要探讨现阶段浏览器端可行的实时通信方案，以及它们的发展历史。 这里以sockjs作为切入点，这是一个流行的浏览器实时通信库，提供了’类Websocket’、一致性、跨平台的API，旨在浏览器和服务器之间创建一个低延迟、全双工、支持跨域的实时通信信道. 主要特点就是仿生Websocket，它会优先使用Websocket作为传输层，在不支持WebSocket的环境回退使用其他解决方案，例如XHR">
-<meta name="keywords" content="Blog,FrontEnd,React,Javascript">
+<meta name="keywords" content="Blog,FrontEnd,React,Javascript,Typescript">
 <meta property="og:type" content="article">
 <meta property="og:title" content="你可能不知道的浏览器实时通信方案">
 <meta property="og:url" content="https://bobi.ink/2019/07/07/sockjs/index.html">
@@ -27,7 +27,7 @@
 <meta property="og:image" content="https://bobi.ink/images/sockjs/htmlfile-progress.png">
 <meta property="og:image" content="https://bobi.ink/images/sockjs/polling2.png">
 <meta property="og:image" content="https://bobi.ink/images/sockjs/polling.png">
-<meta property="og:updated_time" content="2019-07-08T07:16:18.797Z">
+<meta property="og:updated_time" content="2019-07-10T08:30:04.800Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="你可能不知道的浏览器实时通信方案">
 <meta name="twitter:description" content="本文主要探讨现阶段浏览器端可行的实时通信方案，以及它们的发展历史。 这里以sockjs作为切入点，这是一个流行的浏览器实时通信库，提供了’类Websocket’、一致性、跨平台的API，旨在浏览器和服务器之间创建一个低延迟、全双工、支持跨域的实时通信信道. 主要特点就是仿生Websocket，它会优先使用Websocket作为传输层，在不支持WebSocket的环境回退使用其他解决方案，例如XHR">
@@ -78,6 +78,8 @@
     <br>
     <span id="actions">
       <ul>
+        
+        <li><a class="icon" href="/2019/07/10/typeof-testing/"><i class="fa fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
         
         
         <li><a class="icon" href="/2019/07/06/css-variable/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
@@ -298,6 +300,7 @@
 <h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><ul>
 <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/WebRTC_API" target="_blank" rel="noopener">WebRTC</a> 这是浏览器的实时通信技术，它允许网络应用或者站点，在不借助中间媒介的情况下，建立浏览器之间点对点（Peer-to-Peer）的连接，实现视频流和（或）音频流或者其他任意数据的传输。</li>
 <li><a href="https://github.com/meteor/meteor/tree/devel/packages/ddp" target="_blank" rel="noopener">metetor DDP</a> DDP(Distributed Data Protocol), 这是一个’有状态的’实时通信协议，这个是<a href="https://github.com/meteor/meteor" target="_blank" rel="noopener">Meteor</a>框架的基础, 它就是使用这个协议来进行客户端和服务端通信. 他只是一个协议，而不是通信技术，比如它的底层可以基于Websocket、XHR-Streaming、长轮询甚至是WebRTC</li>
+<li><a href="https://www.ruanyifeng.com/blog/2017/05/server-sent_events.html" target="_blank" rel="noopener">Server-Sent Events 教程</a></li>
 <li><a href="https://medium.com/@chijianqiang/程序员怎么会不知道-c10k-问题呢-d024cb7880f3" target="_blank" rel="noopener">程序员怎么会不知道C10K 问题呢？ - 池建强- Medium</a></li>
 </ul>
 
