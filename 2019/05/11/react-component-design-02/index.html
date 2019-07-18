@@ -28,7 +28,7 @@
 <meta property="og:image" content="https://bobi.ink/images/04/ListPage.png">
 <meta property="og:image" content="https://bobi.ink/images/04/CreatePage.png">
 <meta property="og:image" content="https://bobi.ink/images/04/PreviewPage.png">
-<meta property="og:updated_time" content="2019-07-11T14:34:59.577Z">
+<meta property="og:updated_time" content="2019-07-15T00:47:30.837Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="React组件设计实践总结02 - 组件的组织">
 <meta name="twitter:description" content="一个复杂的应用都是由简单的应用发展而来的, 随着越来越多的功能加入项目, 代码就会变得越来越难以控制. 本文章主要探讨在大型项目中如何对组件进行组织, 让项目具备可维护性. 系列目录  01 类型检查 02 组件的组织 03 样式的管理 04 组件的思维 05 状态管理   目录   1. 组件设计的基本原则 基本原则 高质量组件的特征   2. 基本技巧 3. 组件的分类 1️⃣ 容器组件和展示">
@@ -271,7 +271,8 @@
 <p><br></p>
 </li>
 <li><p><strong>容器组件</strong>主要关注业务处理. 容器组件一般以’高阶组件’形式存在, 它一般 ① 从外部数据源(redux 这些状态管理器或者直接请求服务端数据)获取数据, 然后 ② 组合<em>展示组件</em>来构建完整的视图.</p>
-<p><img src="/images/04/container.png" width="400"></p>
+<center><br>  <img src="/images/04/container.png" width="400"><br></center>
+
 <p><em>容器组件</em>通过组合<em>展示组件</em>来构建完整视图, 但两者未必是简单的包含与被包含的关系.</p>
 <p><br></p>
 </li>
@@ -292,7 +293,8 @@
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Login/</span><br><span class="line">  useLogin.ts   // 可复用的业务逻辑</span><br><span class="line">  index.web.tsx</span><br><span class="line">  index.tsx</span><br></pre></td></tr></table></figure>
 <p>上面使用了<code>useLogin.tsx</code>来单独维护业务逻辑. 可以被 web 平台和 native 平台的代码复用.</p>
 <p><br></p>
-<p>  <img src="/images/04/demo.png" width="300"></p>
+<center><br>  <img src="/images/04/demo.png" width="300"><br></center>
+
 <p>不仅仅是<strong>业务逻辑</strong>, 展示<strong>组件逻辑</strong>也可以分离. 例如上图, <code>FilePicker</code>和<code>ImagePicker</code>两个组件的’文件上传’逻辑是共享的, 这部分逻辑可以抽取到高阶组件或者 hooks, 甚至是 Context 中(可以统一配置文件上传行为)</p>
 <p>分离逻辑和视图的主要方式有:</p>
 <ul>
@@ -444,7 +446,8 @@
 <p>我们习惯直接引用这些文件, 而不是通过一个入口文件, 这样可以更明确导入的是什么类型的:</p>
 <figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; hide &#125; <span class="keyword">from</span> <span class="string">'./utils/dom'</span>; <span class="comment">// 通过文件名可以知道, 这可能是隐藏某个DOM元素</span></span><br><span class="line"><span class="keyword">import</span> &#123; hide &#125; <span class="keyword">from</span> <span class="string">'./utils/sdk'</span>; <span class="comment">// webview sdk 提供的的某个方法</span></span><br></pre></td></tr></table></figure>
 <p>最后再总结一下:</p>
-<p>  <img src="/images/04/module-boundary.png" width="600"></p>
+  <center><br>    <img src="/images/04/module-boundary.png" width="600"><br>  </center>
+
 <p>根据模块边界原则(如上图): <strong>一个模块可以访问兄弟(同个作用域下)、 祖先及祖先的兄弟模块</strong>. 例如:</p>
 <ul>
 <li>Bar 可以访问 Foo, 但不能再向下访问它的细节, 即不能访问<code>../Foo/types.ts</code>, 但可以访问它的出口文件<code>../Foo</code></li>
@@ -524,7 +527,8 @@
 <hr>
 <p><br></p>
 <h2 id="6-拆分"><a href="#6-拆分" class="headerlink" title="6. 拆分"></a>6. 拆分</h2><h3 id="1️⃣-拆分-render-方法"><a href="#1️⃣-拆分-render-方法" class="headerlink" title="1️⃣ 拆分 render 方法"></a>1️⃣ 拆分 render 方法</h3><p>当 render 方法的 JSX 结构非常复杂的时候, 首先应该尝试分离这些 JSX, 最简单的做法的就是拆分为多个子 render 方法:</p>
-<p>  <img src="/images/04/sub-render.png" width="600"></p>
+  <center><br>    <img src="/images/04/sub-render.png" width="600"><br>  </center>
+
 <p>当然这种方式只是暂时让 render 方法看起来没有那么复杂, 它并没有拆分组件本身, 所有输入和状态依然聚集在一个组件下面. 所以通常拆分 render 方法只是重构的第一步: 随着组件越来越复杂, 表现为文件越来越长, 笔者一般将 300 行作为一个阈值, <strong>超过 300 行则说明需要对这个组件进进一步拆分</strong></p>
 <p><br></p>
 <hr>
@@ -551,18 +555,21 @@
 <hr>
 <p><br></p>
 <h3 id="2️⃣-划分基础-ui-组件"><a href="#2️⃣-划分基础-ui-组件" class="headerlink" title="2️⃣ 划分基础 UI 组件"></a>2️⃣ 划分基础 UI 组件</h3><p>首先看<code>ListPage</code></p>
-<p>  <img src="/images/04/ListPage.png" width="400"></p>
+  <center><br>    <img src="/images/04/ListPage.png" width="400"><br>  </center>
+
 <p>ListPage 根据 UI 可以划分为下面这些组件:</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ScrollView        # 滚动视图, 提供下拉刷新, 无限加载等功能</span><br><span class="line">  List            # 列表容器, 布局组件</span><br><span class="line">    Item          # 列表项, 布局组件, 提供header, body等占位符</span><br><span class="line">      props - header</span><br><span class="line">         Title       # 渲染标题</span><br><span class="line">      props - after</span><br><span class="line">         Time        # 渲染时间</span><br><span class="line">      props - body</span><br><span class="line">         Status      # 渲染列表项的状态</span><br></pre></td></tr></table></figure>
 <p>再看看<code>CreatePage</code></p>
-<p>  <img src="/images/04/CreatePage.png" width="400"></p>
+  <center><br>    <img src="/images/04/CreatePage.png" width="400"><br>  </center>
+
 <p>这是一个表单填写页面, 为了提高表单填写体验, 这里划分为多个步骤; 每个步骤里有还有多个表单分组; 每个表单的结构都差不多, 左边是 label 展示, 右边是实际表单组件, 所以根据 UI 可以对组件进行这样的划分:</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">CreatePage</span><br><span class="line">  Steps            # 步骤容器, 提供了步骤布局和步骤切换等功能</span><br><span class="line">    Step           # 单一步骤容器</span><br><span class="line">      List         # 表单分组</span><br><span class="line">        List.Item  # 表单容器, 支持设置label</span><br><span class="line">          Input    # 具体表单类型</span><br><span class="line">          Address</span><br><span class="line">          NumberInput</span><br><span class="line">          Select</span><br><span class="line">          FileUpload</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>组件命名的建议: 对于集合型组件, 一般会使用单复数命名, 例如上面的 Steps/Step; List/Item 这种形式也比较常见, 例如 Form/Form.Item, 这种形式比较适合作为子组件形式. 可以学习一下第三方组件库是怎么给组件命名的.</p>
 </blockquote>
 <p>再看一下<code>PreviewPage</code>, PreviewPage 是创建后的数据预览页面, 数据结构和页面结构和 CreatePage 差不多. 将 Steps 对应到 Preview 组件, Step 对应到 Preview.Item. Input 对应到 Input.Preview:</p>
-<p>  <img src="/images/04/PreviewPage.png" width="400"></p>
+  <center><br>    <img src="/images/04/PreviewPage.png" width="400"><br>  </center>
+
 <p><br></p>
 <hr>
 <p><br></p>
