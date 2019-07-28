@@ -15,7 +15,7 @@
 <meta property="og:description" content="原文地址: Modern Script Loading, 文章作者是Preact作者Jason Miller    背景知识先简单介绍一下模块script(Module script), 它指的是现代浏览器支持通过&amp;lt;script type=module src=main.js&amp;gt;&amp;lt;/script&amp;gt;来加载现代的ES6模块. 现代浏览器对ES6现代语法有良好的支持，这意味着我们可">
 <meta property="og:locale" content="zh">
 <meta property="og:image" content="https://bobi.ink/images/modern-module/modern-script-loading.jpg">
-<meta property="og:updated_time" content="2019-07-18T23:18:01.335Z">
+<meta property="og:updated_time" content="2019-07-18T23:21:49.165Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="现代脚本的加载">
 <meta name="twitter:description" content="原文地址: Modern Script Loading, 文章作者是Preact作者Jason Miller    背景知识先简单介绍一下模块script(Module script), 它指的是现代浏览器支持通过&amp;lt;script type=module src=main.js&amp;gt;&amp;lt;/script&amp;gt;来加载现代的ES6模块. 现代浏览器对ES6现代语法有良好的支持，这意味着我们可">
@@ -131,7 +131,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <p>原文地址: <a href="https://jasonformat.com/modern-script-loading/" target="_blank" rel="noopener">Modern Script Loading</a>, 文章作者是Preact作者<a href="https://jasonformat.com/modern-script-loading/" target="_blank" rel="noopener">Jason Miller</a></p>
+    <p>原文地址: <a href="https://jasonformat.com/modern-script-loading/" target="_blank" rel="noopener">Modern Script Loading</a>, 文章作者是Preact作者<a href="https://twitter.com/_developit" target="_blank" rel="noopener">Jason Miller</a></p>
 <p><br></p>
 <p><img src="/images/modern-module/modern-script-loading.jpg" alt></p>
 <p><br></p>
@@ -195,7 +195,7 @@
 <p>给现代浏览器伺服’现代的代码’对性能有很大的帮助。所以你应该针对现代浏览器提供包含更紧凑和优化的现代语法的Javascript包，同时又可以保持对旧浏览器的支持</p>
 <p>现有的工具链的生态系统基本都是在<code>module/nomodule模式</code>上整合的，它声明式加载现代和传统代码(legacy code)，即给浏览器提供两个源代码，让它来自己来决定用哪个:</p>
 <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"module"</span> <span class="attr">src</span>=<span class="string">"/modern.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">nomodule</span> <span class="attr">src</span>=<span class="string">"/legacy.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>然而现实总是给你当头一棒，它没我们期望的那么简单直接。上述基于HTML的加载方式在<strong><a href="https://gist.github.com/jakub-g/5fc11af85a061ca29cc84892f1059fec" target="_blank" rel="noopener">Edge和Safari中会被同时加载</a></strong>!</p>
+<p>然而现实总是给你当头一棒，它没我们期望的那么简单直接。上述基于HTML的加载方式在<a href="https://gist.github.com/jakub-g/5fc11af85a061ca29cc84892f1059fec" target="_blank" rel="noopener"><strong>Edge和Safari中会被同时加载</strong></a>!</p>
 <p><br></p>
 <h2 id="怎么办"><a href="#怎么办" class="headerlink" title="怎么办?"></a>怎么办?</h2><p>怎么办？我们想依赖浏览器来交付不同的编译目标，但是一些旧浏览器并不能优雅地支持这种简洁的写法。</p>
 <p>首先，Safari 在10.1开始支持JS模块, 但不支持nomodule属性。值得庆幸的是，Sam找到了一种方法，可以通过Safari 10和11中非标准的beforeload事件来模拟 nomodule, 也就是可以认为Safari 10.1开始是可以支持<code>module/nomodule模式</code></p>
