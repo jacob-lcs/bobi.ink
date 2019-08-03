@@ -25,7 +25,7 @@
 <meta property="og:image" content="https://bobi.ink/images/react-event/responder.png">
 <meta property="og:image" content="https://codesandbox.io/static/img/play-codesandbox.svg">
 <meta property="og:image" content="https://bobi.ink/images/react-event/react-events.png">
-<meta property="og:updated_time" content="2019-08-03T01:27:55.221Z">
+<meta property="og:updated_time" content="2019-08-03T13:48:56.924Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="谈谈React事件机制和未来(react-events)">
 <meta name="twitter:description" content="当我们在组件上设置事件处理器时，React并不会在该DOM元素上直接绑定事件处理器. React内部自定义了一套事件系统，在这个系统上统一进行事件订阅和分发.  具体来讲，React利用事件委托机制在Document上统一监听DOM事件，再根据触发的target将事件分发到具体的组件实例。另外上面e是一个合成事件对象(SyntheticEvent), 而不是原始的DOM事件对象.  文章大纲">
@@ -355,7 +355,7 @@
 </ul>
 <p>举<code>Press</code>模块作为例子, <a href="https://github.com/facebook/react/blob/master/packages/react-events/docs/Press.md" target="_blank" rel="noopener">Press模块</a>会响应它包裹的元素的press事件。press事件包括onContextMenu、onLongPress、onPress、onPressEnd、onPressMove、onPressStart等等. 其底层通过mouse、pen、touch、trackpad等事件来转换.</p>
 <p>看看使用示例：</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; PressResponder, usePressListener &#125; <span class="keyword">from</span> <span class="string">'react-events/press'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Button = <span class="function">(<span class="params">props</span>) =&gt;</span> (</span><br><span class="line">  <span class="keyword">const</span> listener = usePressListener(&#123;  <span class="comment">// 通过hooks监听当前组件的PressResponder</span></span><br><span class="line">    onPressStart,</span><br><span class="line">    onPress,</span><br><span class="line">    onPressEnd,</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div listeners=&#123;listener&#125;&gt;</span><br><span class="line">      &#123;subtrees&#125;</span><br><span class="line">    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">  );</span></span><br><span class="line"><span class="regexp">);</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; PressResponder, usePressListener &#125; <span class="keyword">from</span> <span class="string">'react-events/press'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Button = <span class="function">(<span class="params">props</span>) =&gt;</span> (</span><br><span class="line">  <span class="keyword">const</span> listener = usePressListener(&#123;  <span class="comment">// ⚛️通过hooks创建Responder</span></span><br><span class="line">    onPressStart,</span><br><span class="line">    onPress,</span><br><span class="line">    onPressEnd,</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div listeners=&#123;listener&#125;&gt;</span><br><span class="line">      &#123;subtrees&#125;</span><br><span class="line">    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">  );</span></span><br><span class="line"><span class="regexp">);</span></span><br></pre></td></tr></table></figure>
 <p><br></p>
 <p>react-events的运作流程图如下, <strong>事件响应器(Event Responders)会挂载到host节点，它会在host节点监听host或子节点分发的原生事件(DOM或React Native), 并将它们转换/合并成高级的事件</strong>:</p>
 <p><img src="/images/react-event/responder.png" alt></p>
@@ -401,6 +401,7 @@
 <li><a href="https://github.com/facebook/react/issues/15257" target="_blank" rel="noopener">[Umbrella] React Flare</a></li>
 <li><a href="https://github.com/facebook/react/tree/master/packages/react-events" target="_blank" rel="noopener">react-events</a></li>
 </ul>
+<p>我的博客即将同步至腾讯云+社区，邀请大家一同入驻：<a href="https://cloud.tencent.com/developer/support-plan?invite_code=3rta2ztqa3sw4" target="_blank" rel="noopener">https://cloud.tencent.com/developer/support-plan?invite_code=3rta2ztqa3sw4</a></p>
 
   </div>
 </article>
