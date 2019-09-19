@@ -6,13 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="description" content="所谓软件架构风格，是指描述某个特定应用领域中系统组织方式的惯用模式。架构风格定义一个词汇表和一组约束，词汇表中包含一些组件及连接器，约束则指出系统如何将构建和连接器组合起来。软件架构风格反映了领域中众多系统所共有的结构和语义特性，并指导如何将系统中的各个模块和子系统有机的结合为一个完整的系统  没多少人能记住上面的定义，需要注意的是本文不是专业讨论系统架构的文章，笔者还还没到那个水平. 所以暂时">
+    <meta name="description" content="所谓软件架构风格，是指描述某个特定应用领域中系统组织方式的惯用模式。架构风格定义一个词汇表和一组约束，词汇表中包含一些组件及连接器，约束则指出系统如何将构建和连接器组合起来。软件架构风格反映了领域中众多系统所共有的结构和语义特性，并指导如何将系统中的各个模块和子系统有机的结合为一个完整的系统  没多少人能记住上面的定义，需要注意的是本文不是专业讨论系统架构的文章，笔者也还没到那个水平. 所以暂时">
 <meta name="keywords" content="Blog,FrontEnd,React,Javascript,Typescript">
 <meta property="og:type" content="article">
 <meta property="og:title" content="透过现象看本质: 常见的前端架构风格和案例">
 <meta property="og:url" content="https://bobi.ink/2019/09/11/arch-pattern/index.html">
 <meta property="og:site_name" content="Bobi.ink">
-<meta property="og:description" content="所谓软件架构风格，是指描述某个特定应用领域中系统组织方式的惯用模式。架构风格定义一个词汇表和一组约束，词汇表中包含一些组件及连接器，约束则指出系统如何将构建和连接器组合起来。软件架构风格反映了领域中众多系统所共有的结构和语义特性，并指导如何将系统中的各个模块和子系统有机的结合为一个完整的系统  没多少人能记住上面的定义，需要注意的是本文不是专业讨论系统架构的文章，笔者还还没到那个水平. 所以暂时">
+<meta property="og:description" content="所谓软件架构风格，是指描述某个特定应用领域中系统组织方式的惯用模式。架构风格定义一个词汇表和一组约束，词汇表中包含一些组件及连接器，约束则指出系统如何将构建和连接器组合起来。软件架构风格反映了领域中众多系统所共有的结构和语义特性，并指导如何将系统中的各个模块和子系统有机的结合为一个完整的系统  没多少人能记住上面的定义，需要注意的是本文不是专业讨论系统架构的文章，笔者也还没到那个水平. 所以暂时">
 <meta property="og:locale" content="zh">
 <meta property="og:image" content="https://bobi.ink/images/arch-pattern/tcp-ip-model.png">
 <meta property="og:image" content="https://bobi.ink/images/arch-pattern/lang.png">
@@ -36,10 +36,10 @@
 <meta property="og:image" content="https://bobi.ink/images/arch-pattern/components.png">
 <meta property="og:image" content="https://bobi.ink/images/arch-pattern/vue-component.png">
 <meta property="og:image" content="https://bobi.ink/images/sponsor.jpg">
-<meta property="og:updated_time" content="2019-09-16T21:07:01.693Z">
+<meta property="og:updated_time" content="2019-09-16T21:24:24.973Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="透过现象看本质: 常见的前端架构风格和案例">
-<meta name="twitter:description" content="所谓软件架构风格，是指描述某个特定应用领域中系统组织方式的惯用模式。架构风格定义一个词汇表和一组约束，词汇表中包含一些组件及连接器，约束则指出系统如何将构建和连接器组合起来。软件架构风格反映了领域中众多系统所共有的结构和语义特性，并指导如何将系统中的各个模块和子系统有机的结合为一个完整的系统  没多少人能记住上面的定义，需要注意的是本文不是专业讨论系统架构的文章，笔者还还没到那个水平. 所以暂时">
+<meta name="twitter:description" content="所谓软件架构风格，是指描述某个特定应用领域中系统组织方式的惯用模式。架构风格定义一个词汇表和一组约束，词汇表中包含一些组件及连接器，约束则指出系统如何将构建和连接器组合起来。软件架构风格反映了领域中众多系统所共有的结构和语义特性，并指导如何将系统中的各个模块和子系统有机的结合为一个完整的系统  没多少人能记住上面的定义，需要注意的是本文不是专业讨论系统架构的文章，笔者也还没到那个水平. 所以暂时">
 <meta name="twitter:image" content="https://bobi.ink/images/arch-pattern/tcp-ip-model.png">
     
     
@@ -87,6 +87,8 @@
     <br>
     <span id="actions">
       <ul>
+        
+        <li><a class="icon" href="/2019/09/15/remax/"><i class="fa fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
         
         
         <li><a class="icon" href="/2019/09/07/react-cliff/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
@@ -153,7 +155,7 @@
     <blockquote>
 <p>所谓软件架构风格，是指描述某个特定应用领域中系统组织方式的惯用模式。架构风格定义一个词汇表和一组约束，词汇表中包含一些组件及连接器，约束则指出系统如何将构建和连接器组合起来。软件架构风格反映了领域中众多系统所共有的结构和语义特性，并指导如何将系统中的各个模块和子系统有机的结合为一个完整的系统</p>
 </blockquote>
-<p>没多少人能记住上面的定义，需要注意的是本文不是专业讨论系统架构的文章，笔者还还没到那个水平. 所以暂时没必要纠结于什么是架构模式、什么是架构风格。在这里<strong>尚且把它们都当成一个系统架构上的套路, 所谓的套路就是一些通用的、可复用的，用于应对某类问题的方式方法. 可以理解为类似“设计模式”的东西，只是解决问题的层次不一样</strong>。</p>
+<p>没多少人能记住上面的定义，需要注意的是本文不是专业讨论系统架构的文章，笔者也还没到那个水平. 所以暂时没必要纠结于什么是架构模式、什么是架构风格。在这里<strong>尚且把它们都当成一个系统架构上的套路, 所谓的套路就是一些通用的、可复用的，用于应对某类问题的方式方法. 可以理解为类似“设计模式”的东西，只是解决问题的层次不一样</strong>。</p>
 <p>透过现象看本质，本文将带你领略前端领域一些流行技术栈背后的架构思想。直接进入正题吧</p>
 <p><strong>文章大纲</strong></p>
 <!-- TOC -->
@@ -196,7 +198,7 @@
 </li>
 </ul>
 <p><br></p>
-<p>关注点分离之后，软件的结构会变得容易理解和开发, 每一层可以被复用, 容易被测试, 其他层的接口通过模拟解决. 但是分层架构，也不是全是优点，<strong>分层的抽象可能会丢失部分效率和灵活性</strong>, 比如编程语言就有明显的层次结构，语言抽象的层次越高，一般运行效率可能会有所衰减:</p>
+<p>关注点分离之后，软件的结构会变得容易理解和开发, 每一层可以被复用, 容易被测试, 其他层的接口通过模拟解决. 但是分层架构，也不是全是优点，<strong>分层的抽象可能会丢失部分效率和灵活性</strong>, 比如编程语言就有’层次’(此例可能不太严谨)，语言抽象的层次越高，一般运行效率可能会有所衰减:</p>
 <p><img src="/images/arch-pattern/lang.png" alt></p>
 <p>分层架构在软件领域的案例实在太多太多了，咱讲讲前端的一些’分层’案例：</p>
 <p><br></p>
@@ -208,7 +210,7 @@
 <p>一开始VirtualDOM和DOM的关系比较暧昧，两者是耦合在一起的。后面有人想，我们有了VirtualDOM这个抽象层，那应该能多搞点别的，比如渲染到移动端原生组件、PDF、Canvas、终端UI等等。</p>
 <p>后来VirtualDOM进行了更彻底的分层，有着这个抽象层我们可以将VirtualDOM映射到更多类似应用场景:</p>
 <p><img src="/images/arch-pattern/vd2.png" alt></p>
-<p>所以说 VirtualDOM 更大的意义在于开发方式的转变: 声明式、 数据驱动, 让开发者不需要关心 DOM 的操作细节(属性操作、事件绑定、DOM 节点变更)，换句话说应用的开发方式变成了<code>view=f(state)</code>, 这对生产力的解放是有很大推动作用的.</p>
+<p>所以说 VirtualDOM 更大的意义在于开发方式的转变: 声明式、 数据驱动, 让开发者不需要关心 DOM 的操作细节(属性操作、事件绑定、DOM 节点变更)，换句话说应用的开发方式变成了<code>view=f(state)</code>, 这对生产力的解放是有很大推动作用的; 另外有了VirtualDOM这一层抽象层，使得多平台渲染成为可能。</p>
 <p>当然VirtualDOM或者React，不是唯一，也不是第一个这样的解决方案。其他前端框架，例如Vue、Angular基本都是这样一个发展历程。</p>
 <p>上面说了，分层不是银弹。我们通过ReactNative可以开发跨平台的移动应用，但是众所周知，它运行效率或者灵活性暂时是无法与原生应用比拟的。</p>
 <p><br></p>
@@ -231,7 +233,7 @@
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// webpack.config.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [&#123;</span><br><span class="line">      test: <span class="regexp">/\.scss$/</span>,</span><br><span class="line">      use: [&#123;</span><br><span class="line">          loader: <span class="string">"style-loader"</span> <span class="comment">// 将 JS 字符串生成为 style 节点</span></span><br><span class="line">      &#125;, &#123;</span><br><span class="line">          loader: <span class="string">"css-loader"</span> <span class="comment">// 将 CSS 转化成 CommonJS 模块</span></span><br><span class="line">      &#125;, &#123;</span><br><span class="line">          loader: <span class="string">"sass-loader"</span> <span class="comment">// 将 Sass 编译成 CSS</span></span><br><span class="line">      &#125;]</span><br><span class="line">    &#125;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p><br></p>
 <h3 id="中间件-middleware"><a href="#中间件-middleware" class="headerlink" title="中间件(Middleware)"></a>中间件(Middleware)</h3><p><img src="/images/arch-pattern/middleware.png" alt></p>
-<p>如果开发过Express、Koa或者Redux, 你可能会发现中间件模式和上述的管道模式有一定的相似性，如上图。相比管道，中间件模式可以使用一个洋葱剖面来形容。和管道相比，一般的中间件实现有以下特点:</p>
+<p>如果开发过<code>Express</code>、<code>Koa</code>或者<code>Redux</code>, 你可能会发现中间件模式和上述的管道模式有一定的相似性，如上图。相比管道，中间件模式可以使用一个洋葱剖面来形容. 但和管道相比，一般的中间件实现有以下特点:</p>
 <ul>
 <li>中间件没有显式的输入输出。这些中间件之间通常通过集中式的上下文对象来共享状态</li>
 <li>有一个循环的过程。管道中，数据处理完毕后交给下游了，后面就不管了。而中间件还有一个回归的过程，当下游处理完毕后会进行回溯，所以有机会干预下游的处理结果。</li>
@@ -259,8 +261,8 @@
 <p><strong>扩展</strong>:</p>
 <ul>
 <li><strong>响应式编程</strong>: 响应式编程本质上也是事件驱动的，下面是前端领域比较流行的两种响应式模式：<ul>
-<li><code>函数响应式(Functional Reactive Programming)</code>, 典型代码RxJS</li>
-<li><code>透明的函数响应式编程(Transparently applying Functional Reactive Programming - TFRP)</code>, 典型代码Vue、Mobx</li>
+<li><code>函数响应式(Functional Reactive Programming)</code>, 典型代表RxJS</li>
+<li><code>透明的函数响应式编程(Transparently applying Functional Reactive Programming - TFRP)</code>, 典型代表Vue、Mobx</li>
 </ul>
 </li>
 <li><strong>消息总线</strong>：指接收、发送消息的软件系统。消息基于一组已知的格式，以便系统无需知道实际接收者就能互相通信</li>
@@ -341,7 +343,7 @@
 <p>组件另外一个重要的特征就是<strong>内聚性</strong>，它是一个独立的单元，自包含了所有需要的资源。例如一个前端组件较包含样式、视图结构、组件逻辑:</p>
 <p><img src="/images/arch-pattern/vue-component.png" alt></p>
 <p><br></p>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p><strong>我终于编不下去了！</strong>还有很多架构风格，限于文章篇幅, 且这些风格主要应用于后端领域，这里就不一一阐述了。你可以通过扩展阅读了解这些模式</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p><strong>我终于编不下去了</strong>！还有很多架构风格，限于文章篇幅, 且这些风格主要应用于后端领域，这里就不一一阐述了。你可以通过扩展阅读了解这些模式</p>
 <ul>
 <li>面向对象风格: 将应用或系统任务分割为单独、可复用、可自给的对象，每个对象都包含数据、以及对象相关的行为</li>
 <li>C/S 客户端/服务器风格</li>
