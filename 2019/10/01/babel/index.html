@@ -9,7 +9,7 @@
     <meta name="description" content="国庆放假了，我还在利用碎片时间在写文章，不知道长假还有没有人看，试试水吧！ 这个文章系列将带大家深入浅出 Babel, 这个系列将分为上下两篇：上篇主要介绍 Babel 的架构和原理，顺便实践一下插件开发的；下篇会介绍 `babel-plugin-macros , 利用它来写属于 Javascript 的’宏‘， ✨满满的干货，不容错过哦. 写文不易，点赞是最大的鼓励。  注意: 本文不是 Bab">
 <meta name="keywords" content="Blog,FrontEnd,React,Javascript,Typescript">
 <meta property="og:type" content="article">
-<meta property="og:title" content="🇨🇳国庆还有人看吗？深入浅出 Babel 上篇：架构和原理 + 实战">
+<meta property="og:title" content="深入浅出 Babel 上篇：架构和原理 + 实战">
 <meta property="og:url" content="https://bobi.ink/2019/10/01/babel/index.html">
 <meta property="og:site_name" content="Bobi.ink">
 <meta property="og:description" content="国庆放假了，我还在利用碎片时间在写文章，不知道长假还有没有人看，试试水吧！ 这个文章系列将带大家深入浅出 Babel, 这个系列将分为上下两篇：上篇主要介绍 Babel 的架构和原理，顺便实践一下插件开发的；下篇会介绍 `babel-plugin-macros , 利用它来写属于 Javascript 的’宏‘， ✨满满的干货，不容错过哦. 写文不易，点赞是最大的鼓励。  注意: 本文不是 Bab">
@@ -23,9 +23,10 @@
 <meta property="og:image" content="https://bobi.ink/images/babel/scope.png">
 <meta property="og:image" content="https://bobi.ink/images/babel/scope2.png">
 <meta property="og:image" content="https://bobi.ink/images/babel/import.png">
-<meta property="og:updated_time" content="2019-10-02T15:14:56.697Z">
+<meta property="og:image" content="https://bobi.ink/images/sponsor.jpg">
+<meta property="og:updated_time" content="2019-10-10T23:18:31.108Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="🇨🇳国庆还有人看吗？深入浅出 Babel 上篇：架构和原理 + 实战">
+<meta name="twitter:title" content="深入浅出 Babel 上篇：架构和原理 + 实战">
 <meta name="twitter:description" content="国庆放假了，我还在利用碎片时间在写文章，不知道长假还有没有人看，试试水吧！ 这个文章系列将带大家深入浅出 Babel, 这个系列将分为上下两篇：上篇主要介绍 Babel 的架构和原理，顺便实践一下插件开发的；下篇会介绍 `babel-plugin-macros , 利用它来写属于 Javascript 的’宏‘， ✨满满的干货，不容错过哦. 写文不易，点赞是最大的鼓励。  注意: 本文不是 Bab">
 <meta name="twitter:image" content="https://bobi.ink/images/babel/process.png">
     
@@ -47,7 +48,7 @@
         
     
     <!-- title -->
-    <title>🇨🇳国庆还有人看吗？深入浅出 Babel 上篇：架构和原理 + 实战</title>
+    <title>深入浅出 Babel 上篇：架构和原理 + 实战</title>
     <!-- styles -->
     <link rel="stylesheet" href="/css/style.css">
     <!-- rss -->
@@ -75,6 +76,8 @@
     <span id="actions">
       <ul>
         
+        <li><a class="icon" href="/2019/10/10/babel-macro/"><i class="fa fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
         
         <li><a class="icon" href="/2019/09/23/kanban/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
         
@@ -90,15 +93,15 @@
     <div id="share" style="display: none">
       <ul>
   <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bobi.ink/2019/10/01/babel/"><i class="fa fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://twitter.com/share?url=https://bobi.ink/2019/10/01/babel/&text=🇨🇳国庆还有人看吗？深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bobi.ink/2019/10/01/babel/&title=🇨🇳国庆还有人看吗？深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bobi.ink/2019/10/01/babel/&is_video=false&description=🇨🇳国庆还有人看吗？深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=🇨🇳国庆还有人看吗？深入浅出 Babel 上篇：架构和原理 + 实战&body=Check out this article: https://bobi.ink/2019/10/01/babel/"><i class="fa fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://getpocket.com/save?url=https://bobi.ink/2019/10/01/babel/&title=🇨🇳国庆还有人看吗？深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://reddit.com/submit?url=https://bobi.ink/2019/10/01/babel/&title=🇨🇳国庆还有人看吗？深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bobi.ink/2019/10/01/babel/&title=🇨🇳国庆还有人看吗？深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://digg.com/submit?url=https://bobi.ink/2019/10/01/babel/&title=🇨🇳国庆还有人看吗？深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bobi.ink/2019/10/01/babel/&name=🇨🇳国庆还有人看吗？深入浅出 Babel 上篇：架构和原理 + 实战&description="><i class="fa fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bobi.ink/2019/10/01/babel/&text=深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bobi.ink/2019/10/01/babel/&title=深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bobi.ink/2019/10/01/babel/&is_video=false&description=深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=深入浅出 Babel 上篇：架构和原理 + 实战&body=Check out this article: https://bobi.ink/2019/10/01/babel/"><i class="fa fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bobi.ink/2019/10/01/babel/&title=深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bobi.ink/2019/10/01/babel/&title=深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bobi.ink/2019/10/01/babel/&title=深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bobi.ink/2019/10/01/babel/&title=深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bobi.ink/2019/10/01/babel/&name=深入浅出 Babel 上篇：架构和原理 + 实战&description="><i class="fa fa-tumblr " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -115,7 +118,7 @@
   <header>
     
     <h1 class="posttitle" itemprop="name headline">
-        🇨🇳国庆还有人看吗？深入浅出 Babel 上篇：架构和原理 + 实战
+        深入浅出 Babel 上篇：架构和原理 + 实战
     </h1>
 
 
@@ -383,6 +386,8 @@
 <p>本文还有下篇，我将在下篇文章中介绍<a href="https://github.com/kentcdodds/babel-plugin-macros" target="_blank" rel="noopener">babel-plugin-macros</a>, 敬请期待！</p>
 <p>点赞是对我最好鼓励。</p>
 <p><br></p>
+<p><img src="/images/sponsor.jpg" alt></p>
+<p><br></p>
 <h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><ul>
 <li><a href="https://astexplorer.net/#/KJ8AjD6maa" target="_blank" rel="noopener">ASTExplorer</a></li>
 <li><a href="https://github.com/jamiebuilds/babel-handbook" target="_blank" rel="noopener">babel-handbook</a></li>
@@ -423,15 +428,15 @@
     <div id="share-footer" style="display: none">
       <ul>
   <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bobi.ink/2019/10/01/babel/"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://twitter.com/share?url=https://bobi.ink/2019/10/01/babel/&text=🇨🇳国庆还有人看吗？深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bobi.ink/2019/10/01/babel/&title=🇨🇳国庆还有人看吗？深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bobi.ink/2019/10/01/babel/&is_video=false&description=🇨🇳国庆还有人看吗？深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=🇨🇳国庆还有人看吗？深入浅出 Babel 上篇：架构和原理 + 实战&body=Check out this article: https://bobi.ink/2019/10/01/babel/"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://getpocket.com/save?url=https://bobi.ink/2019/10/01/babel/&title=🇨🇳国庆还有人看吗？深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://reddit.com/submit?url=https://bobi.ink/2019/10/01/babel/&title=🇨🇳国庆还有人看吗？深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bobi.ink/2019/10/01/babel/&title=🇨🇳国庆还有人看吗？深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://digg.com/submit?url=https://bobi.ink/2019/10/01/babel/&title=🇨🇳国庆还有人看吗？深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bobi.ink/2019/10/01/babel/&name=🇨🇳国庆还有人看吗？深入浅出 Babel 上篇：架构和原理 + 实战&description="><i class="fa fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bobi.ink/2019/10/01/babel/&text=深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bobi.ink/2019/10/01/babel/&title=深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bobi.ink/2019/10/01/babel/&is_video=false&description=深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=深入浅出 Babel 上篇：架构和原理 + 实战&body=Check out this article: https://bobi.ink/2019/10/01/babel/"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bobi.ink/2019/10/01/babel/&title=深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bobi.ink/2019/10/01/babel/&title=深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bobi.ink/2019/10/01/babel/&title=深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bobi.ink/2019/10/01/babel/&title=深入浅出 Babel 上篇：架构和原理 + 实战"><i class="fa fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bobi.ink/2019/10/01/babel/&name=深入浅出 Babel 上篇：架构和原理 + 实战&description="><i class="fa fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
