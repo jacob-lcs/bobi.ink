@@ -6,13 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="description" content="接着上篇文章: 《深入浅出 Babel 上篇：架构和原理 + 实战 🔥》  这篇文章干货不少于上篇文章，这篇我们深入讨论一下宏这个玩意 —— 我想我们对宏并不默认，因为很多程序员第一门语言就是 C/C++; 一些 Lisp 方言也支持宏(如 Clojure、Scheme), 听说它们的宏写起来很优雅；一些现代的编程语言对宏也有一定的支持，如 Rust、Nim、Julia、Elixir，它们是如何">
+    <meta name="description" content="接着上篇文章: 《深入浅出 Babel 上篇：架构和原理 + 实战 🔥》  这篇文章干货不少于上篇文章，这篇我们深入讨论一下宏这个玩意 —— 我想我们对宏并不陌生，因为很多程序员第一门语言就是 C/C++; 一些 Lisp 方言也支持宏(如 Clojure、Scheme), 听说它们的宏写起来很优雅；一些现代的编程语言对宏也有一定的支持，如 Rust、Nim、Julia、Elixir，它们是如何">
 <meta name="keywords" content="Blog,FrontEnd,React,Javascript,Typescript">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深入浅出 Babel 下篇：既生 Plugin 何生 Macros">
 <meta property="og:url" content="https://bobi.ink/2019/10/10/babel-macro/index.html">
 <meta property="og:site_name" content="Bobi.ink">
-<meta property="og:description" content="接着上篇文章: 《深入浅出 Babel 上篇：架构和原理 + 实战 🔥》  这篇文章干货不少于上篇文章，这篇我们深入讨论一下宏这个玩意 —— 我想我们对宏并不默认，因为很多程序员第一门语言就是 C/C++; 一些 Lisp 方言也支持宏(如 Clojure、Scheme), 听说它们的宏写起来很优雅；一些现代的编程语言对宏也有一定的支持，如 Rust、Nim、Julia、Elixir，它们是如何">
+<meta property="og:description" content="接着上篇文章: 《深入浅出 Babel 上篇：架构和原理 + 实战 🔥》  这篇文章干货不少于上篇文章，这篇我们深入讨论一下宏这个玩意 —— 我想我们对宏并不陌生，因为很多程序员第一门语言就是 C/C++; 一些 Lisp 方言也支持宏(如 Clojure、Scheme), 听说它们的宏写起来很优雅；一些现代的编程语言对宏也有一定的支持，如 Rust、Nim、Julia、Elixir，它们是如何">
 <meta property="og:locale" content="zh">
 <meta property="og:image" content="https://bobi.ink/images/babel/c-compile.gif">
 <meta property="og:image" content="https://bobi.ink/images/babel/lisp.png">
@@ -21,10 +21,10 @@
 <meta property="og:image" content="https://bobi.ink/images/babel/syntaxobject.png">
 <meta property="og:image" content="https://bobi.ink/images/babel/tag-template.png">
 <meta property="og:image" content="https://bobi.ink/images/sponsor.jpg">
-<meta property="og:updated_time" content="2019-10-11T10:56:34.112Z">
+<meta property="og:updated_time" content="2019-10-18T14:10:34.400Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入浅出 Babel 下篇：既生 Plugin 何生 Macros">
-<meta name="twitter:description" content="接着上篇文章: 《深入浅出 Babel 上篇：架构和原理 + 实战 🔥》  这篇文章干货不少于上篇文章，这篇我们深入讨论一下宏这个玩意 —— 我想我们对宏并不默认，因为很多程序员第一门语言就是 C/C++; 一些 Lisp 方言也支持宏(如 Clojure、Scheme), 听说它们的宏写起来很优雅；一些现代的编程语言对宏也有一定的支持，如 Rust、Nim、Julia、Elixir，它们是如何">
+<meta name="twitter:description" content="接着上篇文章: 《深入浅出 Babel 上篇：架构和原理 + 实战 🔥》  这篇文章干货不少于上篇文章，这篇我们深入讨论一下宏这个玩意 —— 我想我们对宏并不陌生，因为很多程序员第一门语言就是 C/C++; 一些 Lisp 方言也支持宏(如 Clojure、Scheme), 听说它们的宏写起来很优雅；一些现代的编程语言对宏也有一定的支持，如 Rust、Nim、Julia、Elixir，它们是如何">
 <meta name="twitter:image" content="https://bobi.ink/images/babel/c-compile.gif">
     
     
@@ -72,6 +72,8 @@
     <br>
     <span id="actions">
       <ul>
+        
+        <li><a class="icon" href="/2019/10/18/react-fiber/"><i class="fa fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
         
         
         <li><a class="icon" href="/2019/10/01/babel/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
@@ -137,7 +139,7 @@
   <div class="content" itemprop="articleBody">
     <p>接着上篇文章: <a href="https://juejin.im/post/5d94bfbf5188256db95589be" target="_blank" rel="noopener">《深入浅出 Babel 上篇：架构和原理 + 实战 🔥》</a></p>
 <p><br></p>
-<p><strong>这篇文章干货不少于上篇文章，这篇我们深入讨论一下宏这个玩意</strong> —— <em>我想我们对宏并不默认，因为很多程序员第一门语言就是 <code>C/C++</code>; 一些 <code>Lisp</code> 方言也支持宏(如 <code>Clojure</code>、<code>Scheme</code>), 听说它们的宏写起来很优雅；一些现代的编程语言对宏也有一定的支持，如 <code>Rust</code>、<code>Nim</code>、<code>Julia</code>、<code>Elixir</code>，它们是如何解决技术问题, 实现类Lisp的宏系统的？宏在这些语言中扮演这什么角色…</em></p>
+<p><strong>这篇文章干货不少于上篇文章，这篇我们深入讨论一下宏这个玩意</strong> —— <em>我想我们对宏并不陌生，因为很多程序员第一门语言就是 <code>C/C++</code>; 一些 <code>Lisp</code> 方言也支持宏(如 <code>Clojure</code>、<code>Scheme</code>), 听说它们的宏写起来很优雅；一些现代的编程语言对宏也有一定的支持，如 <code>Rust</code>、<code>Nim</code>、<code>Julia</code>、<code>Elixir</code>，它们是如何解决技术问题, 实现类Lisp的宏系统的？宏在这些语言中扮演这什么角色…</em></p>
 <blockquote>
 <p>如果没读过上篇文章，请先阅读一下，避免影响对本篇文章内容的理解。</p>
 </blockquote>
@@ -193,7 +195,7 @@
 <p><br></p>
 <p>由于 Lisp 这种简单的语法结构，使得数据和程序之间只有一线之隔(<strong>quote修饰就是数据， 没有quote就是程序</strong>), 换句话说就是程序和数据之间可以灵活地转换。这种<code>数据即程序、程序即数据</code>的概念，使得Lisp可以轻松地自定义宏. 不妨来看一下Lisp定义宏的示例：</p>
 <figure class="highlight clj"><table><tr><td class="code"><pre><span class="line"><span class="comment">; 使用defmacro定义一个nonsense宏, 接收一个function-name参数. 宏需要返回一个quoted</span></span><br><span class="line"><span class="comment">; ` 这是quote函数的简写，表示quote，即这段‘程序’是一段‘数据’, 或者说将‘程序’转换为‘数据’. quote不会被‘求值’</span></span><br><span class="line"><span class="comment">; defun 定义一个函数</span></span><br><span class="line"><span class="comment">; , 这是unquote函数的简写， 表示unquote，即将‘数据’转换为‘程序’. unquote会进行求值</span></span><br><span class="line"><span class="comment">; intern 将字符串转换为symbol，即标识符</span></span><br><span class="line"></span><br><span class="line">(<span class="name"><span class="builtin-name">defmacro</span></span> nonsense (<span class="name">function-name</span>)</span><br><span class="line">  `(<span class="name">defun</span> ,(<span class="name"><span class="builtin-name">intern</span></span> (<span class="name"><span class="builtin-name">concat</span></span> <span class="string">"nonsense-"</span> function-name)) (<span class="name">input</span>) <span class="comment">; 定义一个nonsense-$&#123;function-name&#125; 方法</span></span><br><span class="line">     (<span class="name">print</span> (<span class="name"><span class="builtin-name">concat</span></span> ,function-name input))))                   <span class="comment">; 输入`$&#123;function-name&#125;$&#123;input&#125;`</span></span><br></pre></td></tr></table></figure>
-<details><br>  <summary>如果你不理解上面程序的含义，这里有一个Javascript的实现</summary><br>  注意：‘宏’一般在编译阶段被展开, 下面代码只是为了协作你理解上述的Lisp代码<br>  <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">nonsense</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">   <span class="keyword">let</span> rtn</span><br><span class="line">   <span class="built_in">eval</span>(<span class="string">`rtn = function nonsense<span class="subst">$&#123;name&#125;</span>(input) &#123;</span></span><br><span class="line"><span class="string">     console.log('<span class="subst">$&#123;name&#125;</span>', input)</span></span><br><span class="line"><span class="string">   &#125;`</span>)</span><br><span class="line">   <span class="keyword">return</span> rtn</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br><br></details>
+<details><br>  <summary>如果你不理解上面程序的含义，这里有一个Javascript的实现</summary><br><br>  注意：‘宏’一般在编译阶段被展开, 下面代码只是为了协作你理解上述的Lisp代码<br>  <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">nonsense</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">   <span class="keyword">let</span> rtn</span><br><span class="line">   <span class="built_in">eval</span>(<span class="string">`rtn = function nonsense<span class="subst">$&#123;name&#125;</span>(input) &#123;</span></span><br><span class="line"><span class="string">     console.log('<span class="subst">$&#123;name&#125;</span>', input)</span></span><br><span class="line"><span class="string">   &#125;`</span>)</span><br><span class="line">   <span class="keyword">return</span> rtn</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br><br></details>
 
 <p><br></p>
 <p>应用宏展开：</p>
