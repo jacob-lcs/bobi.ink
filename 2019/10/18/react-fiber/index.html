@@ -9,7 +9,7 @@
     <meta name="description" content="写一篇关于 React Fiber 的文章， 这个 Flag 立了很久，这也是今年的目标之一. 最近的在掘金的文章获得很多关注和鼓励，给了我很多动力，所以下定决心好好把它写出来。 我会以最通俗的方式将它讲透, 因此这算是一篇科普式的文章。不管你是使用React、还是Vue，这里面的思想值得学习学习!    一年一度的 React 春晚: React Conf 即将到来，不知道今年会不会有什么惊喜，">
 <meta name="keywords" content="Blog,FrontEnd,React,Javascript,Typescript">
 <meta property="og:type" content="article">
-<meta property="og:title" content="这是最通俗的打开 React Fiber 方式">
+<meta property="og:title" content="这是最通俗的 React Fiber 打开方式">
 <meta property="og:url" content="https://bobi.ink/2019/10/18/react-fiber/index.html">
 <meta property="og:site_name" content="Bobi.ink">
 <meta property="og:description" content="写一篇关于 React Fiber 的文章， 这个 Flag 立了很久，这也是今年的目标之一. 最近的在掘金的文章获得很多关注和鼓励，给了我很多动力，所以下定决心好好把它写出来。 我会以最通俗的方式将它讲透, 因此这算是一篇科普式的文章。不管你是使用React、还是Vue，这里面的思想值得学习学习!    一年一度的 React 春晚: React Conf 即将到来，不知道今年会不会有什么惊喜，">
@@ -37,9 +37,9 @@
 <meta property="og:image" content="https://bobi.ink/images/react-fiber/gitbranch.png">
 <meta property="og:image" content="https://bobi.ink/images/react-fiber/new-frame.jpg">
 <meta property="og:image" content="https://bobi.ink/images/sponsor.jpg">
-<meta property="og:updated_time" content="2019-10-19T09:34:46.849Z">
+<meta property="og:updated_time" content="2019-10-19T09:37:19.201Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="这是最通俗的打开 React Fiber 方式">
+<meta name="twitter:title" content="这是最通俗的 React Fiber 打开方式">
 <meta name="twitter:description" content="写一篇关于 React Fiber 的文章， 这个 Flag 立了很久，这也是今年的目标之一. 最近的在掘金的文章获得很多关注和鼓励，给了我很多动力，所以下定决心好好把它写出来。 我会以最通俗的方式将它讲透, 因此这算是一篇科普式的文章。不管你是使用React、还是Vue，这里面的思想值得学习学习!    一年一度的 React 春晚: React Conf 即将到来，不知道今年会不会有什么惊喜，">
 <meta name="twitter:image" content="https://bobi.ink/images/react-fiber/react-conf.png">
     
@@ -61,7 +61,7 @@
         
     
     <!-- title -->
-    <title>这是最通俗的打开 React Fiber 方式</title>
+    <title>这是最通俗的 React Fiber 打开方式</title>
     <!-- styles -->
     <link rel="stylesheet" href="/css/style.css">
     <!-- rss -->
@@ -104,15 +104,15 @@
     <div id="share" style="display: none">
       <ul>
   <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bobi.ink/2019/10/18/react-fiber/"><i class="fa fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://twitter.com/share?url=https://bobi.ink/2019/10/18/react-fiber/&text=这是最通俗的打开 React Fiber 方式"><i class="fa fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bobi.ink/2019/10/18/react-fiber/&title=这是最通俗的打开 React Fiber 方式"><i class="fa fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bobi.ink/2019/10/18/react-fiber/&is_video=false&description=这是最通俗的打开 React Fiber 方式"><i class="fa fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=这是最通俗的打开 React Fiber 方式&body=Check out this article: https://bobi.ink/2019/10/18/react-fiber/"><i class="fa fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://getpocket.com/save?url=https://bobi.ink/2019/10/18/react-fiber/&title=这是最通俗的打开 React Fiber 方式"><i class="fa fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://reddit.com/submit?url=https://bobi.ink/2019/10/18/react-fiber/&title=这是最通俗的打开 React Fiber 方式"><i class="fa fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bobi.ink/2019/10/18/react-fiber/&title=这是最通俗的打开 React Fiber 方式"><i class="fa fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://digg.com/submit?url=https://bobi.ink/2019/10/18/react-fiber/&title=这是最通俗的打开 React Fiber 方式"><i class="fa fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bobi.ink/2019/10/18/react-fiber/&name=这是最通俗的打开 React Fiber 方式&description="><i class="fa fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bobi.ink/2019/10/18/react-fiber/&text=这是最通俗的 React Fiber 打开方式"><i class="fa fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bobi.ink/2019/10/18/react-fiber/&title=这是最通俗的 React Fiber 打开方式"><i class="fa fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bobi.ink/2019/10/18/react-fiber/&is_video=false&description=这是最通俗的 React Fiber 打开方式"><i class="fa fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=这是最通俗的 React Fiber 打开方式&body=Check out this article: https://bobi.ink/2019/10/18/react-fiber/"><i class="fa fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bobi.ink/2019/10/18/react-fiber/&title=这是最通俗的 React Fiber 打开方式"><i class="fa fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bobi.ink/2019/10/18/react-fiber/&title=这是最通俗的 React Fiber 打开方式"><i class="fa fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bobi.ink/2019/10/18/react-fiber/&title=这是最通俗的 React Fiber 打开方式"><i class="fa fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bobi.ink/2019/10/18/react-fiber/&title=这是最通俗的 React Fiber 打开方式"><i class="fa fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bobi.ink/2019/10/18/react-fiber/&name=这是最通俗的 React Fiber 打开方式&description="><i class="fa fa-tumblr " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -129,7 +129,7 @@
   <header>
     
     <h1 class="posttitle" itemprop="name headline">
-        这是最通俗的打开 React Fiber 方式
+        这是最通俗的 React Fiber 打开方式
     </h1>
 
 
@@ -620,15 +620,15 @@
     <div id="share-footer" style="display: none">
       <ul>
   <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bobi.ink/2019/10/18/react-fiber/"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://twitter.com/share?url=https://bobi.ink/2019/10/18/react-fiber/&text=这是最通俗的打开 React Fiber 方式"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bobi.ink/2019/10/18/react-fiber/&title=这是最通俗的打开 React Fiber 方式"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bobi.ink/2019/10/18/react-fiber/&is_video=false&description=这是最通俗的打开 React Fiber 方式"><i class="fa fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=这是最通俗的打开 React Fiber 方式&body=Check out this article: https://bobi.ink/2019/10/18/react-fiber/"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://getpocket.com/save?url=https://bobi.ink/2019/10/18/react-fiber/&title=这是最通俗的打开 React Fiber 方式"><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://reddit.com/submit?url=https://bobi.ink/2019/10/18/react-fiber/&title=这是最通俗的打开 React Fiber 方式"><i class="fa fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bobi.ink/2019/10/18/react-fiber/&title=这是最通俗的打开 React Fiber 方式"><i class="fa fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://digg.com/submit?url=https://bobi.ink/2019/10/18/react-fiber/&title=这是最通俗的打开 React Fiber 方式"><i class="fa fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bobi.ink/2019/10/18/react-fiber/&name=这是最通俗的打开 React Fiber 方式&description="><i class="fa fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bobi.ink/2019/10/18/react-fiber/&text=这是最通俗的 React Fiber 打开方式"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bobi.ink/2019/10/18/react-fiber/&title=这是最通俗的 React Fiber 打开方式"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bobi.ink/2019/10/18/react-fiber/&is_video=false&description=这是最通俗的 React Fiber 打开方式"><i class="fa fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=这是最通俗的 React Fiber 打开方式&body=Check out this article: https://bobi.ink/2019/10/18/react-fiber/"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bobi.ink/2019/10/18/react-fiber/&title=这是最通俗的 React Fiber 打开方式"><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bobi.ink/2019/10/18/react-fiber/&title=这是最通俗的 React Fiber 打开方式"><i class="fa fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bobi.ink/2019/10/18/react-fiber/&title=这是最通俗的 React Fiber 打开方式"><i class="fa fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bobi.ink/2019/10/18/react-fiber/&title=这是最通俗的 React Fiber 打开方式"><i class="fa fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bobi.ink/2019/10/18/react-fiber/&name=这是最通俗的 React Fiber 打开方式&description="><i class="fa fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
