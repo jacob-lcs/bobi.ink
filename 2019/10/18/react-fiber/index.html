@@ -30,6 +30,7 @@
 <meta property="og:image" content="https://bobi.ink/images/react-fiber/ric.png">
 <meta property="og:image" content="https://bobi.ink/images/react-fiber/mc.png">
 <meta property="og:image" content="https://bobi.ink/images/react-fiber/workloop.png">
+<meta property="og:image" content="https://bobi.ink/images/react-fiber/diff.png">
 <meta property="og:image" content="https://bobi.ink/images/react-fiber/fiber-node.png">
 <meta property="og:image" content="https://bobi.ink/images/react-fiber/work-order.png">
 <meta property="og:image" content="https://bobi.ink/images/react-fiber/fiber-reconciler.png">
@@ -41,7 +42,7 @@
 <meta property="og:image" content="https://bobi.ink/images/react-fiber/resume-4.png">
 <meta property="og:image" content="https://bobi.ink/images/react-fiber/new-frame.jpg">
 <meta property="og:image" content="https://bobi.ink/images/sponsor.jpg">
-<meta property="og:updated_time" content="2019-10-20T10:06:29.999Z">
+<meta property="og:updated_time" content="2019-10-20T13:06:51.786Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="这可能是最通俗的 React Fiber 打开方式">
 <meta name="twitter:description" content="写一篇关于 React Fiber 的文章， 这个 Flag 立了很久，这也是今年的目标之一. 最近的在掘金的文章获得很多关注和鼓励，给了我很多动力，所以下定决心好好把它写出来。 我会以最通俗的方式将它讲透, 因此这算是一篇科普式的文章。不管你是使用React、还是Vue，这里面的思想值得学习学习!    一年一度的 React 春晚: React Conf 即将到来，不知道今年会不会有什么惊喜，">
@@ -427,7 +428,9 @@
 <p><br><br><br></p>
 <h2 id="react-的fiber改造"><a href="#react-的fiber改造" class="headerlink" title="React 的Fiber改造"></a>React 的Fiber改造</h2><p>Fiber 的核心内容已经介绍完了，现在来进一步看看React 为 Fiber 架构做了哪些改造, 如果你对这部分内容不感兴趣可以跳过。</p>
 <p><br></p>
-<h3 id="1-数据结构的调整"><a href="#1-数据结构的调整" class="headerlink" title="1. 数据结构的调整"></a>1. 数据结构的调整</h3><p>上文中提到 React 16 之前，Reconcilation 是同步的、递归执行的。也就是说这是基于函数’调用栈‘的Reconcilation算法，因此通常也称它为<code>Stack Reconcilation</code>. 你可以通过这篇文章<a href="https://juejin.im/post/5cfa29e151882539c33e4f5e" target="_blank" rel="noopener">《从Preact中了解React组件和hooks基本原理》</a> 来回顾一下历史。</p>
+<h3 id="1-数据结构的调整"><a href="#1-数据结构的调整" class="headerlink" title="1. 数据结构的调整"></a>1. 数据结构的调整</h3><p><img src="/images/react-fiber/diff.png" alt><br><i>左侧是Virtual DOM，右侧可以看作diff的递归调用栈</i></p>
+<p><br></p>
+<p>上文中提到 React 16 之前，Reconcilation 是同步的、递归执行的。也就是说这是基于函数’调用栈‘的Reconcilation算法，因此通常也称它为<code>Stack Reconcilation</code>. 你可以通过这篇文章<a href="https://juejin.im/post/5cfa29e151882539c33e4f5e" target="_blank" rel="noopener">《从Preact中了解React组件和hooks基本原理》</a> 来回顾一下历史。</p>
 <p><br></p>
 <p>栈挺好的，代码量少，递归容易理解, 至少比现在的 React Fiber架构好理解😂, 它非常适合树这种嵌套数据结构的处理。</p>
 <p>只不过这种依赖于调用栈的方式不能随意中断、也很难被恢复, 另外它还不利于异步处理。如果你要恢复递归现场，可能需要从头开始, 恢复到之前的调用栈。</p>
