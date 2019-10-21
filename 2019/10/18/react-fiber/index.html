@@ -43,7 +43,7 @@
 <meta property="og:image" content="https://bobi.ink/images/react-fiber/resume-4.png">
 <meta property="og:image" content="https://bobi.ink/images/react-fiber/new-frame.jpg">
 <meta property="og:image" content="https://bobi.ink/images/sponsor.jpg">
-<meta property="og:updated_time" content="2019-10-20T14:30:42.402Z">
+<meta property="og:updated_time" content="2019-10-21T03:17:35.037Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="这可能是最通俗的 React Fiber 打开方式">
 <meta name="twitter:description" content="写一篇关于 React Fiber 的文章， 这个 Flag 立了很久，这也是今年的目标之一. 最近的在掘金的文章获得很多关注和鼓励，给了我很多动力，所以下定决心好好把它写出来。 我会以最通俗的方式将它讲透, 因此这算是一篇科普式的文章。不管你是使用React、还是Vue，这里面的思想值得学习学习!    一年一度的 React 春晚: React Conf 即将到来，不知道今年会不会有什么惊喜，">
@@ -215,7 +215,7 @@
 
 <p><img src="/images/react-fiber/longzhu.jpg" alt></p>
 <p><br></p>
-<p>这让我想起了“龙珠”中的分身术(小时候看过，说错了别喷)，实质上是一个人，只不过是他运动速度太快，看起来就像分身了. 这就是所谓的<strong>并发</strong>。</p>
+<p>这让我想起了“龙珠”中的分身术(小时候看过，说错了别喷)，实质上是一个人，只不过是他运动速度太快，看起来就像分身了. 这就是所谓的<strong>并发(Concurrent)</strong>(单处理器)。</p>
 <p><br></p>
 <p><img src="/images/react-fiber/naruto.jpg" alt></p>
 <p><br></p>
@@ -303,7 +303,7 @@
 <p>优化后的 <code>Concurrent</code> 模式下的 React:</p>
 <p><img src="/images/react-fiber/concurrent-mode.gif" alt></p>
 <p><br></p>
-<p>React 的 Reconcilation 是CPU密集型的操作, 它就相当于我们上面说的’长进程‘。所以初衷和进程调度一样，我们要让高优先级的进程或者短进程优先运行，不能让长进程长期霸占资源.</p>
+<p>React 的 Reconcilation 是CPU密集型的操作, 它就相当于我们上面说的’长进程‘。所以初衷和进程调度一样，我们要让高优先级的进程或者短进程优先运行，不能让长进程长期霸占资源。</p>
 <p>所以React 是怎么优化的？ 划重点， <strong>🔴为了给用户制造一种应用很快的’假象’，我们不能让一个程序长期霸占着资源. 你可以将浏览器的渲染、布局、绘制、资源加载(例如HTML解析)、事件响应、脚本执行视作操作系统的’进程’，我们需要通过某些调度策略合理地分配CPU资源，从而提高浏览器的用户响应速率, 同时兼顾任务执行效率</strong>。</p>
 <p><br></p>
 <p><strong>🔴所以 React 通过Fiber 架构，让自己的Reconcilation 过程变成可被中断。 ‘适时’地让出CPU执行权，除了可以让浏览器及时地响应用户的交互，还有其他好处</strong>:</p>
@@ -532,7 +532,8 @@
 </ul>
 <p><br></p>
 <p>也就是说，在协调阶段如果时间片用完，React就会选择让出控制权。因为协调阶段执行的工作不会导致任何用户可见的变更，所以在这个阶段让出控制权不会有什么问题。</p>
-<p>需要注意的是：因此协调阶段可以被中断和恢复，<strong>React 可能不能保证协调阶段的某些生命周期钩子只被执行一次</strong>, 例如 <code>componentWillMount</code> 可能会被调用两次。 所以 <strong>协调阶段的生命周期钩子不应该包含副作用</strong>. 索性 React 就废弃了这些可能包含副作用的生命周期方法，例如<code>componentWillMount</code>、<code>componentWillMount</code>. v17后我们就不能再用它们了, 所以现有的应用应该尽快迁移.</p>
+<p>需要注意的是：因为协调阶段可能被中断、恢复，甚至重做，<strong>⚠️React 协调阶段的生命周期钩子可能会被调用多次!</strong>, 例如 <code>componentWillMount</code> 可能会被调用两次。 </p>
+<p>因此建议 <strong>协调阶段的生命周期钩子不应该包含副作用</strong>. 索性 React 就废弃了这部分可能包含副作用的生命周期方法，例如<code>componentWillMount</code>、<code>componentWillMount</code>. v17后我们就不能再用它们了, 所以现有的应用应该尽快迁移.</p>
 <p><br></p>
 <p>现在你应该知道为什么’提交阶段’必须同步执行，不能中断的吧？ 因为我们要正确地处理各种副作用，包括DOM变更、还有你在<code>componentDidMount</code>中发起的异步请求、useEffect 中定义的副作用… 因为有副作用，所以必须保证按照次序只调用一次，况且会有用户可以察觉到的变更, 不容差池。</p>
 <p><br><br><br></p>
@@ -614,13 +615,15 @@
 <p>前面说了一大堆，从操作系统进程调度、到浏览器原理、再到合作式调度、最后谈了React的基本改造工作, 地老天荒… 就是为了上面的小人可以在练就凌波微步, 它脚下的坑是浏览器的调用栈。</p>
 <p>React Fiber开启 Concurrent Mode 之后就不会挖大坑了，而是一小坑一坑的挖，挖一下休息一下，有紧急任务就休息少一点。</p>
 <p>但是它肯定不是完美的，因为浏览器无法实现抢占式调度，无法阻止开发者做傻事的，开发者可以随心所欲，想挖多大的坑，就挖多大的坑。</p>
-<p>为了共同创造美好的世界，我们要严律于己， 该做的优化还需要做: 纯组件、虚表、简化组件、缓存… <strong>不要期望 Fiber 能给你现有应用带来质的提升, 自己的锅还是得自己背</strong>.</p>
+<p>为了共同创造美好的世界，我们要严律于己， 该做的优化还需要做: 纯组件、虚表、简化组件、缓存…</p>
+<p>尤雨溪在今年的<a href="https://www.yuque.com/vueconf/2019" target="_blank" rel="noopener">Vue Conf</a>一个观点让我印象深刻：<strong>如果我们可以把更新做得足够快的话，理论上就不需要时间分片了</strong>。</p>
+<p>React Fiber本质上是为了解决 React 更新低效率的问题，<strong>不要期望 Fiber 能给你现有应用带来质的提升, 如果性能问题是自己造成的，自己的锅还是得自己背</strong>.</p>
 <p><br><br><br></p>
 <h2 id="站在巨人的肩膀上"><a href="#站在巨人的肩膀上" class="headerlink" title="站在巨人的肩膀上"></a>站在巨人的肩膀上</h2><p><br></p>
 <p>本文之所以能成文，离不开社区上优质的开源项目和资料。</p>
 <p><strong>迷你 Fiber 实现</strong>:</p>
-<p>React 现在的代码库太复杂了! <a href="https://www.zhihu.com/people/he-shi-jun" target="_blank" rel="noopener">Hax</a> 在 <a href="https://www.zhihu.com/question/270428598/answer/354017709" target="_blank" rel="noopener">《为什么社区里那些类 React 库至今没有选择实现 Fiber 架构？》 </a> 就开玩笑说: Fiber 性价比略低… 到了这个阶段，竞品太多，facebook 就搞一个 fiber 来作为护城河……</p>
-<p>如果你只是想了解 Fiber，去读 React 的源码性价比也很低，不妨看看这些 Mini 版实现, 感受其精髓，不求甚解:</p>
+<p>React 现在的代码库太复杂了! 而且一直在变动和推翻自己，<a href="https://www.zhihu.com/people/he-shi-jun" target="_blank" rel="noopener">Hax</a> 在 <a href="https://www.zhihu.com/question/270428598/answer/354017709" target="_blank" rel="noopener">《为什么社区里那些类 React 库至今没有选择实现 Fiber 架构？》 </a> 就开玩笑说: Fiber 性价比略低… 到了这个阶段，竞品太多，facebook 就搞一个 fiber 来作为护城河……</p>
+<p>这种工程量不是一般团队能Hold住的， 如果你只是想了解 Fiber，去读 React 的源码性价比也很低，不妨看看这些 Mini 版实现, 感受其精髓，不求甚解:</p>
 <ul>
 <li><a href="https://github.com/RubyLouvre/anu" target="_blank" rel="noopener">anu</a> <a href="https://github.com/RubyLouvre" target="_blank" rel="noopener">司徒正美</a> 开发的类React框架</li>
 <li><a href="https://github.com/132yse/fre" target="_blank" rel="noopener">Fre</a> <a href="https://www.zhihu.com/people/132yse" target="_blank" rel="noopener">伊撒尔</a> 开发的类React框架，代码很精简⁉️</li>
@@ -663,11 +666,11 @@
 <li><a href="https://juejin.im/post/5d06bf0a51882528194a9736" target="_blank" rel="noopener">React性能测量和分析</a></li>
 </ul>
 <p><br></p>
+<p>本文讲了 React 如何优化 CPU 问题，React 野心远不在于此, I/O 方向的优化也在实践，例如 Suspend…  还有很多没讲完，后面的文章见！</p>
+<p><br></p>
 <p>问卷调查，你觉得这种文章风格怎样？</p>
 <p>A. 事无巨细，太啰嗦了<br>B. 娓娓道来，深入浅出我喜欢<br>C. 内容不够深入<br>D. 文章篇幅太长，可以拆分</p>
-<p>多选，下方评论，点赞走起</p>
-<p><br></p>
-<p>还有很多没讲完，后面的文章见！</p>
+<p>多选，下方评论，👍点赞走起</p>
 <p><br></p>
 <p><img src="/images/sponsor.jpg" alt></p>
 <p><br></p>
