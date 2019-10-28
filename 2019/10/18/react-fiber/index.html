@@ -44,7 +44,7 @@
 <meta property="og:image" content="https://bobi.ink/images/react-fiber/new-frame.jpg">
 <meta property="og:image" content="https://bobi.ink/images/react-fiber/benifit.png">
 <meta property="og:image" content="https://bobi.ink/images/sponsor.jpg">
-<meta property="og:updated_time" content="2019-10-21T14:46:31.791Z">
+<meta property="og:updated_time" content="2019-10-26T04:07:48.864Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="这可能是最通俗的 React Fiber 打开方式">
 <meta name="twitter:description" content="写一篇关于 React Fiber 的文章， 这个 Flag 立了很久，这也是今年的目标之一. 最近的在掘金的文章获得很多关注和鼓励，给了我很多动力，所以下定决心好好把它写出来。 我会以最通俗的方式将它讲透, 因此这算是一篇科普式的文章。不管你是使用React、还是Vue，这里面的思想值得学习学习!    一年一度的 React 春晚: React Conf 即将到来，不知道今年会不会有什么惊喜，">
@@ -95,6 +95,8 @@
     <br>
     <span id="actions">
       <ul>
+        
+        <li><a class="icon" href="/2019/10/26/concurrent-mode-suspense/"><i class="fa fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
         
         
         <li><a class="icon" href="/2019/10/10/babel-macro/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
@@ -177,7 +179,26 @@
 </ul>
 <p><br></p>
 <p><strong>以下文章大纲</strong></p>
-<!-- TOC -->autoauto- <a href="#单处理进程调度-fiber-不是一个新的东西">单处理进程调度: Fiber 不是一个新的东西</a>auto- <a href="#类比浏览器javascript执行环境">类比浏览器JavaScript执行环境</a>auto- <a href="#何为-fiber">何为 Fiber</a>auto  - <a href="#1-一种流程控制原语">1. 一种流程控制原语</a>auto  - <a href="#2-一个执行单元">2. 一个执行单元</a>auto- <a href="#react-的fiber改造">React 的Fiber改造</a>auto  - <a href="#1-数据结构的调整">1. 数据结构的调整</a>auto  - <a href="#2-两个阶段的拆分">2. 两个阶段的拆分</a>auto  - <a href="#3-reconcilation">3. Reconcilation</a>auto  - <a href="#4-双缓冲">4. 双缓冲</a>auto  - <a href="#5-副作用的收集和提交">5. 副作用的收集和提交</a>auto- <a href="#⚠️-未展开部分-🚧----中断和恢复">⚠️ 未展开部分 🚧 – 中断和恢复</a>auto- <a href="#凌波微步">凌波微步</a>auto- <a href="#站在巨人的肩膀上">站在巨人的肩膀上</a>autoauto<!-- /TOC -->
+<ul>
+<li><a href="#单处理进程调度-fiber-不是一个新的东西">单处理进程调度: Fiber 不是一个新的东西</a></li>
+<li><a href="#类比浏览器javascript执行环境">类比浏览器JavaScript执行环境</a></li>
+<li><a href="#何为-fiber">何为 Fiber</a><ul>
+<li><a href="#1-一种流程控制原语">1. 一种流程控制原语</a></li>
+<li><a href="#2-一个执行单元">2. 一个执行单元</a></li>
+</ul>
+</li>
+<li><a href="#react-的fiber改造">React 的Fiber改造</a><ul>
+<li><a href="#1-数据结构的调整">1. 数据结构的调整</a></li>
+<li><a href="#2-两个阶段的拆分">2. 两个阶段的拆分</a></li>
+<li><a href="#3-reconcilation">3. Reconcilation</a></li>
+<li><a href="#4-双缓冲">4. 双缓冲</a></li>
+<li><a href="#5-副作用的收集和提交">5. 副作用的收集和提交</a></li>
+</ul>
+</li>
+<li><a href="#⚠️-未展开部分-🚧----中断和恢复">⚠️ 未展开部分 🚧 – 中断和恢复</a></li>
+<li><a href="#凌波微步">凌波微步</a></li>
+<li><a href="#站在巨人的肩膀上">站在巨人的肩膀上</a></li>
+</ul>
 <p><br><br><br></p>
 <h2 id="单处理进程调度-fiber-不是一个新的东西"><a href="#单处理进程调度-fiber-不是一个新的东西" class="headerlink" title="单处理进程调度: Fiber 不是一个新的东西"></a>单处理进程调度: Fiber 不是一个新的东西</h2><p><br></p>
 <p><img src="/images/react-fiber/dos.jpg" alt><br><i>这个黑乎乎的界面应该就是微软的 <code>DOS</code> 操作系统</i></p>
@@ -526,7 +547,7 @@
 <p><br></p>
 <p>也就是说，在协调阶段如果时间片用完，React就会选择让出控制权。因为协调阶段执行的工作不会导致任何用户可见的变更，所以在这个阶段让出控制权不会有什么问题。</p>
 <p>需要注意的是：因为协调阶段可能被中断、恢复，甚至重做，<strong>⚠️React 协调阶段的生命周期钩子可能会被调用多次!</strong>, 例如 <code>componentWillMount</code> 可能会被调用两次。 </p>
-<p>因此建议 <strong>协调阶段的生命周期钩子不要包含副作用</strong>. 索性 React 就废弃了这部分可能包含副作用的生命周期方法，例如<code>componentWillMount</code>、<code>componentWillMount</code>. v17后我们就不能再用它们了, 所以现有的应用应该尽快迁移.</p>
+<p>因此建议 <strong>协调阶段的生命周期钩子不要包含副作用</strong>. 索性 React 就废弃了这部分可能包含副作用的生命周期方法，例如<code>componentWillMount</code>、<code>componentWillUpdate</code>. v17后我们就不能再用它们了, 所以现有的应用应该尽快迁移.</p>
 <p><br></p>
 <p>现在你应该知道为什么’提交阶段’必须同步执行，不能中断的吧？ 因为我们要正确地处理各种副作用，包括DOM变更、还有你在<code>componentDidMount</code>中发起的异步请求、useEffect 中定义的副作用… 因为有副作用，所以必须保证按照次序只调用一次，况且会有用户可以察觉到的变更, 不容差池。</p>
 <p>关于为什么要拆分两个阶段，<a href="https://github.com/facebook/react/issues/13186#issuecomment-403959161" target="_blank" rel="noopener">这里</a>有更详细的解释。</p>
@@ -677,9 +698,16 @@
 <p>本文讲了 React 如何优化 CPU 问题，React 野心远不在于此, I/O 方向的优化也在实践，例如 Suspend…  还有很多没讲完，后面的文章见！</p>
 <p><br></p>
 <p>问卷调查，你觉得这种文章风格怎样？</p>
-<p>A. 事无巨细，太啰嗦了<br>B. 娓娓道来，深入浅出我喜欢<br>C. 内容不够深入<br>D. 文章篇幅太长，可以拆分</p>
+<ul>
+<li>A. 事无巨细，太啰嗦了</li>
+<li>B. 娓娓道来，深入浅出我喜欢</li>
+<li>C. 内容不够深入</li>
+<li>D. 文章篇幅太长，可以拆分</li>
+</ul>
 <p>多选，下方评论，👍点赞走起</p>
-<p>改了一个正经一点的网名：_sx_(傻叉) -&gt; 荒山 ⛰</p>
+<blockquote>
+<p><strong>改了一个正经一点的网名：_sx_(傻叉) -&gt; 荒山 ⛰</strong></p>
+</blockquote>
 <p><br></p>
 <p><img src="/images/sponsor.jpg" alt></p>
 <p><br></p>
