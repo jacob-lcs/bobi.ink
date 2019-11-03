@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://bobi.ink/images/concurrent-mode/test5.gif">
 <meta property="og:image" content="https://bobi.ink/images/concurrent-mode/hyhs.png">
 <meta property="og:image" content="https://bobi.ink/images/sponsor.jpg">
-<meta property="og:updated_time" content="2019-11-03T02:00:53.043Z">
+<meta property="og:updated_time" content="2019-11-03T02:17:48.045Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="React Concurrent 模式抢先预览下篇: useTransition 的平行世界">
 <meta name="twitter:description" content="上篇文章介绍了 Suspense, 那么这篇文章就讲讲它的好搭档 useTransition。如果你是 React 的粉丝，这两篇文章一定不能错过。 我们知道 React 内部做了翻天覆地的优化，外部也提供了一些紧凑的新 API，这些 API 主要用来优化用户体验。React 官方用一篇很长的文档《Concurrent UI Patterns 》 专门来介绍这一方面的动机和创造，其中的主角就是 u">
@@ -254,6 +254,9 @@
 <p>看一下实际的运行效果吧！</p>
 <p><img src="/images/concurrent-mode/demo2.gif" alt></p>
 <p><br></p>
+<blockquote>
+<p>可以在这个 <a href="https://codesandbox.io/s/usetransition-y74ry?fontsize=14" target="_blank" rel="noopener">CodeSandbox</a> 查看运行效果</p>
+</blockquote>
 <p>这个效果完全跟本节开始的’第一张图’一样: React 会保留在当前页面，<code>pending</code> 变为了true，接着 B 先就绪，界面马上切换过去。整个过程符合 <strong><code>Pending</code> -&gt; <code>Skeleton</code> -&gt; <code>Complete</code></strong> 的路径。</p>
 <p><code>startTransition</code> 中的<code>变更</code>一旦触发 <code>Suspense</code>，React 就会将<code>变更</code>标记的 Pending 状态, React会延后 ’提交‘ 这些变更。所以<strong>实际上并没有开头说的平行宇宙, 那么高大上和神奇，React 只不过是延后了这些变更的提交。我们界面上看到的只不过是旧的或者未被 Pending 的状态，React 在后台进行了预渲染</strong>。</p>
 <p>注意，React 只是暂时没有提交这些变更，不说明 React ’卡死了‘，处于Pending 状态的组件还会接收用户的响应，进行新的状态变更，新的状态更新也可以覆盖或终止 Pending 状态。</p>
