@@ -44,7 +44,7 @@
 <meta property="og:image" content="https://bobi.ink/images/react-fiber/new-frame.jpg">
 <meta property="og:image" content="https://bobi.ink/images/react-fiber/benifit.png">
 <meta property="og:image" content="https://bobi.ink/images/sponsor.jpg">
-<meta property="og:updated_time" content="2019-10-26T04:07:48.864Z">
+<meta property="og:updated_time" content="2019-10-31T04:47:29.368Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="这可能是最通俗的 React Fiber 打开方式">
 <meta name="twitter:description" content="写一篇关于 React Fiber 的文章， 这个 Flag 立了很久，这也是今年的目标之一. 最近的在掘金的文章获得很多关注和鼓励，给了我很多动力，所以下定决心好好把它写出来。 我会以最通俗的方式将它讲透, 因此这算是一篇科普式的文章。不管你是使用React、还是Vue，这里面的思想值得学习学习!    一年一度的 React 春晚: React Conf 即将到来，不知道今年会不会有什么惊喜，">
@@ -286,7 +286,7 @@
 <p><br></p>
 <p>JavaScript 是<a href="https://juejin.im/post/5a6547d0f265da3e283a1df7" target="_blank" rel="noopener">单线程运行</a>的，而且在浏览器环境屁事非常多，它要负责页面的JS解析和执行、绘制、事件处理、静态资源加载和处理, 这些任务可以类比上面’进程‘。</p>
 <blockquote>
-<p>这里特指Javascript 引擎是单线程运行的。 严格来说，页面绘制由单独的<code>GUI渲染进程</code>负责，只不过<code>GUI渲染线程</code>和<code>Javascript线程</code>是互斥的. 另外底层的异步操作实际上也是多线程的。</p>
+<p>这里特指Javascript 引擎是单线程运行的。 严格来说，Javascript 引擎和页面渲染引擎在同一个渲染线程，GUI 渲染和 Javascript执行 两者是互斥的. 另外异步 I/O 操作底层实际上可能是多线程的在驱动。</p>
 </blockquote>
 <p><img src="/images/react-fiber/frame-full.jpg" alt><br><i>图片来源: <a href="https://developers.google.com/web/fundamentals/performance/rendering" target="_blank" rel="noopener">Rendering Performance</a></i></p>
 <p><strong>它只是一个’JavaScript’，同时只能做一件事情，这个和 <code>DOS</code> 的单任务操作系统一样的，事情只能一件一件的干。要是前面有一个傻叉任务长期霸占CPU，后面什么事情都干不了，浏览器会呈现卡死的状态，这样的用户体验就会非常差</strong>。</p>
@@ -685,6 +685,12 @@
 <p><br></p>
 <p><strong>自荐React 相关文章</strong></p>
 <p>回顾一下今年写的关于 React 的相关文章</p>
+<p>Concurrent模式预览（推荐）:</p>
+<ul>
+<li><a href="https://juejin.im/post/5db65d87518825648f2ef899#comment" target="_blank" rel="noopener">React Concurrent 模式抢先预览: Suspense 篇</a></li>
+</ul>
+<p><br></p>
+<p>往期文章:</p>
 <ul>
 <li><a href="https://juejin.im/post/5cd7f2c4e51d453a7d63b715" target="_blank" rel="noopener">React组件设计实践总结 系列 共5篇</a></li>
 <li><a href="https://juejin.im/post/5d8395646fb9a06ad16faa57" target="_blank" rel="noopener">自己写个React渲染器: 以 Remax 为例(用React写小程序)</a></li>
