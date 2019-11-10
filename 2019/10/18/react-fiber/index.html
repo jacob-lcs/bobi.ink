@@ -44,7 +44,7 @@
 <meta property="og:image" content="https://bobi.ink/images/react-fiber/new-frame.jpg">
 <meta property="og:image" content="https://bobi.ink/images/react-fiber/benifit.png">
 <meta property="og:image" content="https://bobi.ink/images/sponsor.jpg">
-<meta property="og:updated_time" content="2019-10-31T04:47:29.368Z">
+<meta property="og:updated_time" content="2019-11-10T04:40:10.775Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="这可能是最通俗的 React Fiber 打开方式">
 <meta name="twitter:description" content="写一篇关于 React Fiber 的文章， 这个 Flag 立了很久，这也是今年的目标之一. 最近的在掘金的文章获得很多关注和鼓励，给了我很多动力，所以下定决心好好把它写出来。 我会以最通俗的方式将它讲透, 因此这算是一篇科普式的文章。不管你是使用React、还是Vue，这里面的思想值得学习学习!    一年一度的 React 春晚: React Conf 即将到来，不知道今年会不会有什么惊喜，">
@@ -526,21 +526,21 @@
 <ul>
 <li><p><strong>⚛️ 协调阶段</strong>: 可以认为是 Diff 阶段, <strong>这个阶段可以被中断</strong>, 这个阶段会找出所有节点变更，例如节点新增、删除、属性变更等等, 这些变更React 称之为’<code>副作用</code>(Effect)’ . 以下生命周期钩子会在协调阶段被调用：</p>
 <ul>
-<li>constructor</li>
-<li>componentWillMount 废弃</li>
-<li>componentWillReceiveProps 废弃</li>
-<li>static getDerivedStateFromProps</li>
-<li>shouldComponentUpdate</li>
-<li>componentWillUpdate 废弃</li>
-<li>render</li>
-<li>getSnapshotBeforeUpdate()</li>
+<li><code>constructor</code></li>
+<li><code>componentWillMount</code> 废弃</li>
+<li><code>componentWillReceiveProps</code> 废弃</li>
+<li><code>static getDerivedStateFromProps</code></li>
+<li><code>shouldComponentUpdate</code></li>
+<li><code>componentWillUpdate</code> 废弃</li>
+<li><code>render</code></li>
 </ul>
 </li>
 <li><p><strong>⚛️ 提交阶段</strong>: 将上一个阶段计算出来的需要处理的<strong>副作用(Effects)</strong>一次性执行了。<strong>这个阶段必须同步执行，不能被打断</strong>. 这些生命周期钩子在提交阶段被执行:</p>
 <ul>
-<li>componentDidMount</li>
-<li>componentDidUpdate</li>
-<li>componentWillUnmount</li>
+<li><code>getSnapshotBeforeUpdate()</code> 严格来说，这个是在进入 commit 阶段前调用</li>
+<li><code>componentDidMount</code></li>
+<li><code>componentDidUpdate</code></li>
+<li><code>componentWillUnmount</code></li>
 </ul>
 </li>
 </ul>
@@ -687,7 +687,8 @@
 <p>回顾一下今年写的关于 React 的相关文章</p>
 <p>Concurrent模式预览（推荐）:</p>
 <ul>
-<li><a href="https://juejin.im/post/5db65d87518825648f2ef899#comment" target="_blank" rel="noopener">React Concurrent 模式抢先预览: Suspense 篇</a></li>
+<li><a href="https://juejin.im/post/5db65d87518825648f2ef899#comment" target="_blank" rel="noopener">React Concurrent 模式抢先预览上篇: Suspense the world</a></li>
+<li><a href="https://juejin.im/post/5dbee8e7e51d4558040f0830" target="_blank" rel="noopener">React Concurrent 模式抢先预览下篇: useTransition 的平行世界</a></li>
 </ul>
 <p><br></p>
 <p>往期文章:</p>
