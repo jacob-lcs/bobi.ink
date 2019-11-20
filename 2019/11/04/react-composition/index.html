@@ -9,16 +9,16 @@
     <meta name="description" content="前几篇文章都在讲 React 的 Concurrent 模式, 很多读者都看懵了，这一篇来点轻松的，蹭了一下 Vue 3.0 的热度。讲讲如何在 React 下实现 Vue Composition API(下面简称VCA)，只是个玩具，别当真。 实现 ‘React’ Composition API？看起来很吊，确实也是，通过本文你可以体会到这两种思想的碰撞, 你可以深入学习三样东西：React H">
 <meta name="keywords" content="Blog,FrontEnd,React,Javascript,Typescript">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[实战] 为了精通 React Hooks, 我抄了 Vue Composition API">
+<meta property="og:title" content="[实战] 为了学好 React Hooks, 我抄了 Vue Composition API, 真香">
 <meta property="og:url" content="https://bobi.ink/2019/11/04/react-composition/index.html">
 <meta property="og:site_name" content="Bobi.ink">
 <meta property="og:description" content="前几篇文章都在讲 React 的 Concurrent 模式, 很多读者都看懵了，这一篇来点轻松的，蹭了一下 Vue 3.0 的热度。讲讲如何在 React 下实现 Vue Composition API(下面简称VCA)，只是个玩具，别当真。 实现 ‘React’ Composition API？看起来很吊，确实也是，通过本文你可以体会到这两种思想的碰撞, 你可以深入学习三样东西：React H">
 <meta property="og:locale" content="zh">
 <meta property="og:image" content="https://bobi.ink/images/react-composition/pass-by-reference-vs-pass-by-value-animation.gif">
 <meta property="og:image" content="https://bobi.ink/images/sponsor.jpg">
-<meta property="og:updated_time" content="2019-11-10T13:34:42.897Z">
+<meta property="og:updated_time" content="2019-11-11T23:23:03.785Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="[实战] 为了精通 React Hooks, 我抄了 Vue Composition API">
+<meta name="twitter:title" content="[实战] 为了学好 React Hooks, 我抄了 Vue Composition API, 真香">
 <meta name="twitter:description" content="前几篇文章都在讲 React 的 Concurrent 模式, 很多读者都看懵了，这一篇来点轻松的，蹭了一下 Vue 3.0 的热度。讲讲如何在 React 下实现 Vue Composition API(下面简称VCA)，只是个玩具，别当真。 实现 ‘React’ Composition API？看起来很吊，确实也是，通过本文你可以体会到这两种思想的碰撞, 你可以深入学习三样东西：React H">
 <meta name="twitter:image" content="https://bobi.ink/images/react-composition/pass-by-reference-vs-pass-by-value-animation.gif">
     
@@ -40,7 +40,7 @@
         
     
     <!-- title -->
-    <title>[实战] 为了精通 React Hooks, 我抄了 Vue Composition API</title>
+    <title>[实战] 为了学好 React Hooks, 我抄了 Vue Composition API, 真香</title>
     <!-- styles -->
     <link rel="stylesheet" href="/css/style.css">
     <!-- rss -->
@@ -68,6 +68,8 @@
     <span id="actions">
       <ul>
         
+        <li><a class="icon" href="/2019/11/17/fe-load/"><i class="fa fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
         
         <li><a class="icon" href="/2019/10/28/concurrent-mode-transition/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
         
@@ -83,15 +85,15 @@
     <div id="share" style="display: none">
       <ul>
   <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bobi.ink/2019/11/04/react-composition/"><i class="fa fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://twitter.com/share?url=https://bobi.ink/2019/11/04/react-composition/&text=[实战] 为了精通 React Hooks, 我抄了 Vue Composition API"><i class="fa fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bobi.ink/2019/11/04/react-composition/&title=[实战] 为了精通 React Hooks, 我抄了 Vue Composition API"><i class="fa fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bobi.ink/2019/11/04/react-composition/&is_video=false&description=[实战] 为了精通 React Hooks, 我抄了 Vue Composition API"><i class="fa fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=[实战] 为了精通 React Hooks, 我抄了 Vue Composition API&body=Check out this article: https://bobi.ink/2019/11/04/react-composition/"><i class="fa fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://getpocket.com/save?url=https://bobi.ink/2019/11/04/react-composition/&title=[实战] 为了精通 React Hooks, 我抄了 Vue Composition API"><i class="fa fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://reddit.com/submit?url=https://bobi.ink/2019/11/04/react-composition/&title=[实战] 为了精通 React Hooks, 我抄了 Vue Composition API"><i class="fa fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bobi.ink/2019/11/04/react-composition/&title=[实战] 为了精通 React Hooks, 我抄了 Vue Composition API"><i class="fa fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://digg.com/submit?url=https://bobi.ink/2019/11/04/react-composition/&title=[实战] 为了精通 React Hooks, 我抄了 Vue Composition API"><i class="fa fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bobi.ink/2019/11/04/react-composition/&name=[实战] 为了精通 React Hooks, 我抄了 Vue Composition API&description="><i class="fa fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bobi.ink/2019/11/04/react-composition/&text=[实战] 为了学好 React Hooks, 我抄了 Vue Composition API, 真香"><i class="fa fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bobi.ink/2019/11/04/react-composition/&title=[实战] 为了学好 React Hooks, 我抄了 Vue Composition API, 真香"><i class="fa fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bobi.ink/2019/11/04/react-composition/&is_video=false&description=[实战] 为了学好 React Hooks, 我抄了 Vue Composition API, 真香"><i class="fa fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=[实战] 为了学好 React Hooks, 我抄了 Vue Composition API, 真香&body=Check out this article: https://bobi.ink/2019/11/04/react-composition/"><i class="fa fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bobi.ink/2019/11/04/react-composition/&title=[实战] 为了学好 React Hooks, 我抄了 Vue Composition API, 真香"><i class="fa fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bobi.ink/2019/11/04/react-composition/&title=[实战] 为了学好 React Hooks, 我抄了 Vue Composition API, 真香"><i class="fa fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bobi.ink/2019/11/04/react-composition/&title=[实战] 为了学好 React Hooks, 我抄了 Vue Composition API, 真香"><i class="fa fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bobi.ink/2019/11/04/react-composition/&title=[实战] 为了学好 React Hooks, 我抄了 Vue Composition API, 真香"><i class="fa fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bobi.ink/2019/11/04/react-composition/&name=[实战] 为了学好 React Hooks, 我抄了 Vue Composition API, 真香&description="><i class="fa fa-tumblr " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -108,7 +110,7 @@
   <header>
     
     <h1 class="posttitle" itemprop="name headline">
-        [实战] 为了精通 React Hooks, 我抄了 Vue Composition API
+        [实战] 为了学好 React Hooks, 我抄了 Vue Composition API, 真香
     </h1>
 
 
@@ -221,13 +223,13 @@
 <tbody>
 <tr>
 <td>状态</td>
-<td><code>const [value, setValue] = useState(0)</code> or <code>useReducer</code></td>
-<td><code>const state = reactive({value: 0})</code> or <code>ref(0)</code></td>
+<td><code>const [value, setValue] = useState(0)</code> <br> <code>useReducer</code></td>
+<td><code>const state = reactive({value: 0})</code> <br> <code>ref(0)</code></td>
 </tr>
 <tr>
 <td>状态变更</td>
-<td><code>setValue(1)</code> or<code>setValue(n =&gt; n + 1)</code> or <code>dispatch</code></td>
-<td><code>state.value = 1</code> or <code>state.value++</code></td>
+<td><code>setValue(1)</code> <br> <code>setValue(n =&gt; n + 1)</code> <br> <code>dispatch</code></td>
+<td><code>state.value = 1</code> <br> <code>state.value++</code></td>
 </tr>
 <tr>
 <td>状态衍生</td>
@@ -236,27 +238,27 @@
 </tr>
 <tr>
 <td>对象引用</td>
-<td><code>const foo = useRef(0);</code> + <code>foo.current = 1</code></td>
-<td><code>const foo = ref(0)</code> + <code>foo.value = 1</code></td>
+<td><code>const foo = useRef(0);</code> <br> <code>foo.current = 1</code></td>
+<td><code>const foo = ref(0)</code> <br> <code>foo.value = 1</code></td>
 </tr>
 <tr>
 <td>挂载</td>
 <td><code>useEffect(() =&gt; {/*挂载*/}, [])</code></td>
-<td><code>onBeforeMount(() =&gt; {/*挂载前*/})</code> + <code>onMounted(() =&gt; {/*挂载后*/})</code></td>
+<td><code>onBeforeMount(() =&gt; {/*挂载前*/})</code> <br> <code>onMounted(() =&gt; {/*挂载后*/})</code></td>
 </tr>
 <tr>
 <td>卸载</td>
-<td><code>useEffect(() =&gt; {/*挂载*/; return () =&gt; {/*卸载*/}}, [])</code></td>
-<td><code>onBeforeUnmount(() =&gt; {/*卸载前*/})</code> + <code>onUnmounted(() =&gt; {/*挂载后*/})</code></td>
+<td><code>useEffect(() =&gt; () =&gt; {/*卸载*/}}, [])</code></td>
+<td><code>onBeforeUnmount(() =&gt; {/*卸载前*/})</code> <br> <code>onUnmounted(() =&gt; {/*卸载后*/})</code></td>
 </tr>
 <tr>
 <td>重新渲染</td>
 <td><code>useEffect(() =&gt; {/*更新*/})</code></td>
-<td><code>onBeforeUpdate(() =&gt; {/*更新前*/})</code> + <code>onUpdated(() =&gt; {/*更新后*/})</code></td>
+<td><code>onBeforeUpdate(() =&gt; {/*更新前*/})</code> <br> <code>onUpdated(() =&gt; {/*更新后*/})</code></td>
 </tr>
 <tr>
 <td>异常处理</td>
-<td>目前只有类组件支持(<code>componentDidCatch</code> 或 <code>static getDerivedStateFromError</code></td>
+<td>目前只有类组件支持(<code>componentDidCatch</code>, <br> <code>static getDerivedStateFromError</code>)</td>
 <td><code>onErrorCaptured((err) =&gt; {/*异常处理*/})</code></td>
 </tr>
 <tr>
@@ -272,7 +274,7 @@
 <tr>
 <td>Context 注入</td>
 <td><code>useContext(YouContext)</code></td>
-<td><code>inject(key)</code> + <code>provider(key, value)</code></td>
+<td><code>inject(key)</code> <br> <code>provider(key, value)</code></td>
 </tr>
 </tbody>
 </table>
@@ -539,15 +541,15 @@
     <div id="share-footer" style="display: none">
       <ul>
   <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bobi.ink/2019/11/04/react-composition/"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://twitter.com/share?url=https://bobi.ink/2019/11/04/react-composition/&text=[实战] 为了精通 React Hooks, 我抄了 Vue Composition API"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bobi.ink/2019/11/04/react-composition/&title=[实战] 为了精通 React Hooks, 我抄了 Vue Composition API"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bobi.ink/2019/11/04/react-composition/&is_video=false&description=[实战] 为了精通 React Hooks, 我抄了 Vue Composition API"><i class="fa fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=[实战] 为了精通 React Hooks, 我抄了 Vue Composition API&body=Check out this article: https://bobi.ink/2019/11/04/react-composition/"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://getpocket.com/save?url=https://bobi.ink/2019/11/04/react-composition/&title=[实战] 为了精通 React Hooks, 我抄了 Vue Composition API"><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://reddit.com/submit?url=https://bobi.ink/2019/11/04/react-composition/&title=[实战] 为了精通 React Hooks, 我抄了 Vue Composition API"><i class="fa fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bobi.ink/2019/11/04/react-composition/&title=[实战] 为了精通 React Hooks, 我抄了 Vue Composition API"><i class="fa fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://digg.com/submit?url=https://bobi.ink/2019/11/04/react-composition/&title=[实战] 为了精通 React Hooks, 我抄了 Vue Composition API"><i class="fa fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bobi.ink/2019/11/04/react-composition/&name=[实战] 为了精通 React Hooks, 我抄了 Vue Composition API&description="><i class="fa fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bobi.ink/2019/11/04/react-composition/&text=[实战] 为了学好 React Hooks, 我抄了 Vue Composition API, 真香"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bobi.ink/2019/11/04/react-composition/&title=[实战] 为了学好 React Hooks, 我抄了 Vue Composition API, 真香"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bobi.ink/2019/11/04/react-composition/&is_video=false&description=[实战] 为了学好 React Hooks, 我抄了 Vue Composition API, 真香"><i class="fa fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=[实战] 为了学好 React Hooks, 我抄了 Vue Composition API, 真香&body=Check out this article: https://bobi.ink/2019/11/04/react-composition/"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bobi.ink/2019/11/04/react-composition/&title=[实战] 为了学好 React Hooks, 我抄了 Vue Composition API, 真香"><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bobi.ink/2019/11/04/react-composition/&title=[实战] 为了学好 React Hooks, 我抄了 Vue Composition API, 真香"><i class="fa fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bobi.ink/2019/11/04/react-composition/&title=[实战] 为了学好 React Hooks, 我抄了 Vue Composition API, 真香"><i class="fa fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bobi.ink/2019/11/04/react-composition/&title=[实战] 为了学好 React Hooks, 我抄了 Vue Composition API, 真香"><i class="fa fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bobi.ink/2019/11/04/react-composition/&name=[实战] 为了学好 React Hooks, 我抄了 Vue Composition API, 真香&description="><i class="fa fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
