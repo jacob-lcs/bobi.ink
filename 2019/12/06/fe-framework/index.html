@@ -21,7 +21,8 @@
 <meta property="og:image" content="https://bobi.ink/images/fe-framework/base.png">
 <meta property="og:image" content="https://bobi.ink/images/fe-framework/app-dev.png">
 <meta property="og:image" content="https://bobi.ink/images/fe-framework/component.png">
-<meta property="og:updated_time" content="2019-12-08T07:06:15.201Z">
+<meta property="og:image" content="https://bobi.ink/images/fe-framework/icework.png">
+<meta property="og:updated_time" content="2019-12-09T03:17:05.804Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="if 我是前端Leader，谈谈前端框架体系建设">
 <meta name="twitter:description" content="这期来聊一聊前端框架。 “if 我是前端 Leader” 是我的一个文章系列，说说我人在其位，欲谋其职的一些点点滴滴感悟。跟前端 Leader 只有那么一丢丢关系，干货不多，但老少皆宜，不要被标题给唬住了。  文章大纲    什么是框架? 前端‘框架’的发展历程 前端框架启蒙阶段 野蛮生长期 前端框架整合期   现有的框架都有什么？ 谈谈前端团队框架体系的建设 第一阶段: 前端工程化 / 基础设施">
@@ -174,6 +175,7 @@
 </blockquote>
 <p>关键字是<strong>企业级</strong>。什么是企业级，我自己也说不清楚。我只知道 React 没有说自己是企业级，Koa、Express 也没有，然而 <a href="https://eggjs.org" target="_blank" rel="noopener">Eggjs</a> 和 <a href="https://umijs.org" target="_blank" rel="noopener">Umijs</a> 都说它们是<strong>企业级框架</strong>；Angular 通常也常常跟企业级这个概念联系在一起；语言层面有 Java。</p>
 <p>对比一下他们就知道了，我觉得企业级表示它是 <strong>面向企业生产，目的是提高企业的生产力</strong>。总结一下有以下特点：</p>
+<p><br></p>
 <ul>
 <li>是高效 + 成熟方案的整合</li>
 <li>关注生产的整个链路，而不是某个环节</li>
@@ -182,11 +184,13 @@
 <li>标准化</li>
 <li>经过生产环境验证, 有较多用例保证</li>
 </ul>
+<p><br></p>
 <p>归根到底还是成本问题，框架最本质的目的就是要减低各类成本。让更少的人可以做更多的事情、且能保证质量、降低维护成本，且能保证不断优化和演进。</p>
 <p><br></p>
 <p><strong>给个定义吧。</strong></p>
 <p><br></p>
 <p><strong>前端框架体系的建立离不开前端工程化成熟和‘最佳实践‘的沉淀’。你可以认为框架就是一个整合的方案，提供一个前端‘最佳‘的组合配置。开发者需要做的就是在这个框架约束下填充自己业务代码。</strong></p>
+<p><br></p>
 <p>好处：</p>
 <ul>
 <li>效率提升。让开发者关注业务开发</li>
@@ -213,8 +217,9 @@
 <p><br><br><br></p>
 <h3 id="前端框架整合期"><a href="#前端框架整合期" class="headerlink" title="前端框架整合期"></a>前端框架整合期</h3><p>几乎每个团队都会重复走这样的路子：<em>稳定技术栈、工程化建设、基础库/组件库建设、沉淀自己的最佳实践</em>。</p>
 <p>团队没有一定的工程能力和资源其实是很难将这些零散的实践体系化、有机地粘合起来, 长期有效的维护更新更是一件难事, 半途而废的居多。</p>
-<p>现在前端发展开始进入平稳阶段。所以大一统的前端‘框架’再一次进入人们的视野。就像 Umi 的作者 <a href="https://www.zhihu.com/people/chenchengpro/activities" target="_blank" rel="noopener">云谦</a> 说的: 现在是工业化时代, 框架像是一个魔法球，把各种技术栈吸到一起，加工后吐给用户，以此来支撑业务。</p>
-<p><img src="/images/fe-framework/bigfish.jpg" alt></p>
+<p>现在前端发展开始进入平稳阶段。所以大一统的前端‘框架’再一次进入人们的视野。就像 Umi 的作者 <a href="https://www.zhihu.com/people/chenchengpro/activities" target="_blank" rel="noopener">云谦</a> 说的: <em>现在是工业化时代, 框架像是一个魔法球，把各种技术栈吸到一起，加工后吐给用户，以此来支撑业务</em>。</p>
+<p><img src="/images/fe-framework/bigfish.jpg" alt><br><em>上图来源于&lt;蚂蚁前端研发最佳实践&gt; PPT</em></p>
+<p><br></p>
 <p>框架就是将各种技术栈方案、基础设施整合起来, 暴露标准的、一致性的接口, 让开发者专注业务开发。</p>
 <p><br><br><br></p>
 <h2 id="现有的框架都有什么？"><a href="#现有的框架都有什么？" class="headerlink" title="现有的框架都有什么？"></a>现有的框架都有什么？</h2><p><strong>一个前端开发框架应该涵盖前端开发链路的各个环节。为约束和简化业务开发、提供有用的指导</strong>。</p>
@@ -235,7 +240,7 @@
 <li>完全使用开源框架。开源框架可以满足许多通用的需求, 适合简单的应用场景。<strong>我们选择一个框架主要有两个原因：① 我们要提高工作效率；② 我们需要一个标准</strong>。 为了标准，其实可妥协一些事情。更重要的是这些框架是在不断发展和演进的, 从而我们团队的技术也可以免费地跟随他们演进和发展。将开源框架的默认最佳实践开发视为标准。</li>
 </ul>
 <p><br></p>
-<p>我一直坚信专业的人做专业的事。要善于将事情外包出去，腾空自己去做重要的事情。大厂有专门的团队在做工具、建设基础设施，社区上开源的框架也由一大帮牛人在维护，而且通常开发迭代很活跃。所以说社区已经有的方案，可以直接拿来用，不要自己去造轮子，因为你一般没那么多精力。</p>
+<p>我一直坚信<strong>专业的人做专业的事。要善于将事情外包出去，腾空自己去做重要的事情</strong>。大厂有专门的团队在做工具、建设基础设施，社区上开源的框架也由一大帮牛人在维护，而且通常开发迭代很活跃。所以说社区已经有的方案，可以直接拿来用，不要自己去造轮子，因为你一般没那么多精力。</p>
 <p><br><br><br></p>
 <h2 id="谈谈前端团队框架体系的建设"><a href="#谈谈前端团队框架体系的建设" class="headerlink" title="谈谈前端团队框架体系的建设"></a>谈谈前端团队框架体系的建设</h2><p>前端开发的时间都花在了哪里?</p>
 <p><img src="/images/fe-framework/time.jpg" alt><br><em>上图来源于&lt;蚂蚁前端研发最佳实践&gt; PPT</em></p>
@@ -265,6 +270,8 @@
 <li>布局。例如后台的整体布局。</li>
 <li>项目。项目的整体结构。可以通过‘脚手架‘ 来快速生成项目模板。</li>
 </ul>
+<p><br></p>
+<p><img src="/images/fe-framework/icework.png" alt></p>
 <p><br></p>
 <p>像区块、页面生成这些操作需要一些工具辅助。例如：</p>
 <ul>
